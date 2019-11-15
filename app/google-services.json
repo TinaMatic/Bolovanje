@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "72007856879",
+    "firebase_url": "https://bolovanje-ce69d.firebaseio.com",
+    "project_id": "bolovanje-ce69d",
+    "storage_bucket": "bolovanje-ce69d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72007856879:android:1dc4b002bb73800654211a",
+        "android_client_info": {
+          "package_name": "com.example.bolovanje"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72007856879-9mea4u5upfaj7s5r673ge9lo63n801fl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bolovanje",
+            "certificate_hash": "3001215fde33a57ebfba29032483145a8096899c"
+          }
+        },
+        {
+          "client_id": "72007856879-2m3qla2amrvlahvsrd26m0garaddtl8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe-0Y5hrsmsNxkwI1HQooT0Dx2qLUUAhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72007856879-2m3qla2amrvlahvsrd26m0garaddtl8i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
