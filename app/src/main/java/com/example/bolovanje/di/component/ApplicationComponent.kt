@@ -20,6 +20,8 @@ import javax.inject.Singleton
 @Component(modules = [AndroidSupportInjectionModule::class, ApplicationModule::class, EmployerModule::class])
 interface ApplicationComponent: AndroidInjector<BolovanjeApplication> {
 
+    // TODO: check out here and use modules to provide fragments and activities also extend daaggerfragment which handles inject by itself
+    // https://medium.com/@khreniak/dagger-scopes-simple-explanation-184684707227
     fun inject(act: MainActivity)
     fun inject(frag: EmployersFragment)
     fun inject(frag: HomeFragment)

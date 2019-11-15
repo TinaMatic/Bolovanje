@@ -4,7 +4,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class EmployerRepository {
+class EmployerRepository { // TODO: when have structure like this, create data class Employee in models with all this info and add inject it to repo
 
     private var firstName: String? = null
     private var lastName: String? = null

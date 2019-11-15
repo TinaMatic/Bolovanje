@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         (activity?.application as BolovanjeApplication).getBolovanjeComponent()
-            .inject(this)
+            .inject(this) // TODO: instead of this line extend DaggerFragment to remove boilerplate code
         super.onAttach(context)
     }
 }
