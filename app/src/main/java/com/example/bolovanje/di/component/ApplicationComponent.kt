@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.bolovanje.BolovanjeApplication
 import com.example.bolovanje.di.module.ApplicationModule
 import com.example.bolovanje.di.module.EmployerModule
+import com.example.bolovanje.di.module.FragmentModule
 import com.example.bolovanje.ui.MainActivity
 import com.example.bolovanje.ui.employers.EmployersFragment
 import com.example.bolovanje.ui.employers.allEmployers.AllEmployersFragment
@@ -17,7 +18,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AndroidSupportInjectionModule::class, ApplicationModule::class, EmployerModule::class])
+@Component(modules = [AndroidSupportInjectionModule::class, ApplicationModule::class, EmployerModule::class, FragmentModule::class])
 interface ApplicationComponent: AndroidInjector<BolovanjeApplication> {
 
     // TODO: check out here and use modules to provide fragments and activities also extend daaggerfragment which handles inject by itself
@@ -28,6 +29,7 @@ interface ApplicationComponent: AndroidInjector<BolovanjeApplication> {
     fun inject(frag: SearchFragment)
     fun inject(frag: AllEmployersFragment)
     fun inject(frag: TenOrMoreDaysEmployersFragment)
+
 
     @Component.Builder
     interface Builder {
