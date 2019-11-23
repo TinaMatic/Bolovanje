@@ -6,6 +6,7 @@ import com.example.bolovanje.di.component.ApplicationComponent
 import com.example.bolovanje.di.component.DaggerApplicationComponent
 import com.example.bolovanje.di.module.ApplicationModule
 import com.example.bolovanje.di.module.EmployerModule
+import com.example.bolovanje.di.module.FragmentModule
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -25,6 +26,7 @@ open class BolovanjeApplication: Application(), HasActivityInjector {
             .application(this)
             .applicationModule(ApplicationModule(applicationContext))
             .employerModule(EmployerModule())
+            .fragmentModule(FragmentModule())
             .build()
     }
 

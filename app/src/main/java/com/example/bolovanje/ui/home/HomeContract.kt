@@ -7,15 +7,19 @@ import java.util.*
 
 class HomeContract {
 
-    interface Presenter{
-        fun loadData()
-        fun writeDataToFirebase()
+    interface Presenter: BaseContract.BasePresenter<View>{
+        fun writeData(firstName: String, lastName: String, excuse: Boolean)
         fun selectDates(dates: MutableList<Calendar>) : Observable<ConfirmDates>
+        fun resetCalendar()
     }
 
     interface View {
         fun showCalendar(dates: MutableList<Calendar>)
         fun hideCalendar()
-        fun showProgressBar()
+        fun showProgressBar(show: Boolean)
+        fun readData()
+        fun showSuccessfulMessage()
+        fun showErrorMessage()
+//        fun submitData()
     }
 }

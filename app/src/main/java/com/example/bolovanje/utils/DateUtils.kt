@@ -1,5 +1,6 @@
 package com.example.bolovanje.utils
 
+import com.google.firebase.database.Exclude
 import org.threeten.bp.DateTimeUtils
 import org.threeten.bp.format.DateTimeFormatterBuilder
 import java.time.ZonedDateTime

@@ -23,13 +23,14 @@ import java.util.*
 
 
 
-class DateDialog (context: Context, private val selectedDays: MutableList<Calendar>): AppCompatDialog(context) {
+class DateDialog (context: Context, theme: Int, private val selectedDays: MutableList<Calendar>): AppCompatDialog(context, theme) {
 
     lateinit var confirmDateObservable: Observable<MutableList<Calendar>>
     lateinit var cancelObservable: Observable<Unit>
 
     init {
         setCancelable(false)
+//        LayoutInflater.from(parent.context).inflate(R.layout.users_row, parent, false))
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.calendar, null)
 
@@ -60,6 +61,7 @@ class DateDialog (context: Context, private val selectedDays: MutableList<Calend
                 selectedDays.add(it.calendar)
             }else{
                 selectedDays.remove(it.calendar)
+                calSelectedDate.setHighlightedDays(selectedDays)
             }
         }
 
@@ -68,7 +70,7 @@ class DateDialog (context: Context, private val selectedDays: MutableList<Calend
 
         //handle ok button click
         confirmDateObservable = rootView.btnSet.clicks()
-            .switchMap { Observable.fromCallable { selectedDays } }
+            .switchMap {Observable.fromCallable { selectedDays }}
 
     }
 

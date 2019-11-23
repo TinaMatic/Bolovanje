@@ -13,12 +13,12 @@ import com.example.bolovanje.ui.home.HomeFragment
 import com.example.bolovanje.ui.search.SearchFragment
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
-import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AndroidSupportInjectionModule::class, ApplicationModule::class, EmployerModule::class, FragmentModule::class])
+@Component(modules = [AndroidInjectionModule::class, ApplicationModule::class, EmployerModule::class, FragmentModule::class])
 interface ApplicationComponent: AndroidInjector<BolovanjeApplication> {
 
     // TODO: check out here and use modules to provide fragments and activities also extend daaggerfragment which handles inject by itself
@@ -38,6 +38,7 @@ interface ApplicationComponent: AndroidInjector<BolovanjeApplication> {
         fun application(application: Application): Builder
         fun applicationModule(applicationModule: ApplicationModule): Builder
         fun employerModule(employerModule: EmployerModule): Builder
+        fun fragmentModule(fragmentModule: FragmentModule): Builder
         fun build(): ApplicationComponent
     }
 }

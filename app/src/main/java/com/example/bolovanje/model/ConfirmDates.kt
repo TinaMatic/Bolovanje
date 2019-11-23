@@ -1,6 +1,9 @@
 package com.example.bolovanje.model
 
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-data class ConfirmDates(val selectedDays: MutableList<Calendar>, val dataLabel: String){
+class ConfirmDates @Inject constructor (val selectedDays: MutableList<Calendar>?, val dataLabel: String?){
+
 }

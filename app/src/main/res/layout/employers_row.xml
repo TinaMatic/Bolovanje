@@ -78,9 +78,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtNumberOfDays"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_alignLeft="@id/txtNumberOfDays"
+                android:layout_toRightOf="@id/txtTenOrMoreDaysLabel"
+                android:text="broj dana"
+                android:textColor="#0B1B69"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDaysWithExcuseLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtTenOrMoreDays"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_toRightOf="@id/txtNumberOfDaysLabel"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@id/civEmployersProfile"
+                android:text="@string/days_with_excuse"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDaysWithExcuse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtTenOrMoreDays"
+                android:layout_marginTop="5dp"
+                android:layout_alignLeft="@id/txtTenOrMoreDays"
+                android:layout_toRightOf="@id/txtDaysWithExcuseLabel"
                 android:text="broj dana"
                 android:textColor="#0B1B69"
                 android:textSize="18sp"

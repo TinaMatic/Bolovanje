@@ -17,18 +17,29 @@ buildscript {
 }
 
 ext {
+    //retrofit
     retrofit_version = '2.3.0'
+
+    //RxJava
     rxjava2_version = '2.1.8'
     rxandroid_version = '2.0.1'
     rxkotlin_verison = '2.4.0'
+    rxBindingKotlinVersion = '2.1.1'
+
+    //dagger
     dagger2_version = '2.17'
+
     support_version = '28.0.0'
     spinKit_version = '1.2.0'
+
+    //firebase
     firebase_version = '17.0.0'
+
     // Multi-selection calendar
     applandeoCalendarVersion = '1.7.0'
     streamVersion = '1.2.1'
-    rxBindingKotlinVersion = '2.1.1'
+
+
     // Time
     threeTenBpVersion = '1.3.6'
     threeTenAbpVersion = '1.1.0'

@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
-
+apply plugin: 'com.google.gms.google-services'
 
 
 android {
@@ -86,7 +86,7 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$firebase_version"
     implementation "com.google.firebase:firebase-database:$firebase_version"
     implementation "com.google.firebase:firebase-storage:$firebase_version"
-//    implementation 'com.firebaseui:firebase-ui-database:5.1.0'
+    implementation 'com.firebaseui:firebase-ui-database:5.1.0'
 
     // for unit test time
     implementation "org.threeten:threetenbp:$threeTenBpVersion"
@@ -94,4 +94,5 @@ dependencies {
     //multidates selector
     implementation 'com.applandeo:material-calendar-view:1.7.0'
 //    implementation project(path: ':multiSelectionCalendar')
+
 }
