@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import com.example.bolovanje.di.component.ApplicationComponent
 import com.example.bolovanje.di.component.DaggerApplicationComponent
+import com.example.bolovanje.di.module.ActivityModule
 import com.example.bolovanje.di.module.ApplicationModule
 import com.example.bolovanje.di.module.EmployerModule
 import com.example.bolovanje.di.module.FragmentModule
@@ -12,7 +13,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
 
-open class BolovanjeApplication: Application(), HasActivityInjector {
+open class SickLeaveApplication: Application(), HasActivityInjector {
 
     @Inject
     lateinit var activityInjector: DispatchingAndroidInjector<Activity>
@@ -27,6 +28,7 @@ open class BolovanjeApplication: Application(), HasActivityInjector {
             .applicationModule(ApplicationModule(applicationContext))
             .employerModule(EmployerModule())
             .fragmentModule(FragmentModule())
+            .activityModule(ActivityModule())
             .build()
     }
 

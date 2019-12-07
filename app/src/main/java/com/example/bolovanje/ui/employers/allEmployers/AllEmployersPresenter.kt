@@ -1,70 +1,51 @@
 package com.example.bolovanje.ui.employers.allEmployers
 
-import android.util.Log
-import android.view.View
 import com.example.bolovanje.model.Employer
-import com.google.firebase.database.*
-import io.reactivex.Observable
-import io.reactivex.Scheduler
+import com.example.bolovanje.model.FirebaseRepository
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import javax.inject.Inject
 
-class AllEmployersPresenter: AllEmployersContract.Presenter {
+class AllEmployersPresenter : AllEmployersContract.Presenter {
 
     private lateinit var view: AllEmployersContract.View
     private var compositeDisposable = CompositeDisposable()
-    var mFirebaseDatabaseRef: DatabaseReference = FirebaseDatabase.getInstance().reference
-    var selectedDays : MutableList<String> = mutableListOf()
-
-    var employerList: MutableList<Employer> = mutableListOf()
 
     @Inject
     lateinit var employers: Employer
 
     override fun loadData() {
-        var databaseReference = mFirebaseDatabaseRef.child("Employer").orderByChild("numOfDays")
 
+       compositeDisposable.add(FirebaseRepository.readData()
+           .subscribeOn(Schedulers.io())
+           .map {
+               if (it.first.isNotEmpty()){
+                   Pair(it.first as ArrayList<Employer>, it.second as ArrayList<String>)
+//                   it.first as ArrayList<Employer>
 
-        databaseReference.addValueEventListener(object : ValueEventListener{
+               }else{
+                   Pair(arrayListOf(), arrayListOf())
+//                   arrayListOf()
+               }}
+           .observeOn(AndroidSchedulers.mainThread())
+           .subscribe (
+            {
+               if(it.first.isNotEmpty()){
+                   view.showProgressBar(false)
+                   view.showData(it.first)
+               }else{
+                   view.showProgressBar(false)
+                   view.showData(it.first)
+               }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.value != null){
-                    var orderSnapshot = dataSnapshot.children
-
-                    for(employer in orderSnapshot){
-                        val firstName = employer.child("firstName").value.toString().trim()
-                        val lastName = employer.child("lastName").value.toString().trim()
-                        val numOfDays = employer.child("numOfDays").value.toString().trim()
-                        val excuse = employer.child("excuse").value as Boolean
-
-                        employers = Employer(firstName, lastName, excuse, selectedDays, numOfDays.toInt())
-                        employerList.add(employers)
-
-                        employerList.sortByDescending {
-                            it.numOfDays
-                        }
-
-                        view.showProgressBar(false)
-//                        Log.i("Sorted employer list ", employers.numOfDays.toString())
-                        view.showData(employerList)
-                    }
-                }else{
-                    view.showProgressBar(false)
-                    view.showData(employerList)
-                }
-            }
-
-
-            override fun onCancelled(error: DatabaseError) {
-                view.showErrorMessage(error.toString())
-            }
-
-        })
+           },{error->
+               view.showErrorMessage(error.toString())
+               view.showProgressBar(true)
+           }))
     }
-
 
 
     override fun attach(view: AllEmployersContract.View) {
@@ -72,7 +53,7 @@ class AllEmployersPresenter: AllEmployersContract.Presenter {
     }
 
     override fun destroy() {
-        compositeDisposable.clear()
+        compositeDisposable.dispose()
     }
 
 }

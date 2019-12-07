@@ -10,8 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.bolovanje.BolovanjeApplication
+import com.example.bolovanje.SickLeaveApplication
 
 import com.example.bolovanje.R
 import com.example.bolovanje.model.Employer
@@ -23,8 +22,13 @@ import javax.inject.Inject
  */
 class AllEmployersFragment : Fragment(), AllEmployersContract.View {
 
+    private lateinit var adapter: AllEmployersAdapter
+
     @Inject
     lateinit var presenter: AllEmployersContract.Presenter
+
+//    @Inject
+//    lateinit var navigator: Navigator
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,22 +46,32 @@ class AllEmployersFragment : Fragment(), AllEmployersContract.View {
 
         clNoResults.findViewById<TextView>(R.id.tvNoResultText)
             .text = getString(R.string.employer_no_data_text)
-//        initView()
+
     }
 
+
     override fun onAttach(context: Context) {
-        (activity?.application as BolovanjeApplication).getBolovanjeComponent()
+        (activity?.application as SickLeaveApplication).getBolovanjeComponent()
             .inject(this) // TODO: instead of this line extend DaggerFragment to remove boilerplate code
         super.onAttach(context)
     }
 
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        presenter.loadData()
+//    }
+
+//    override fun onStart() {
+//        super.onStart()
+//        presenter.loadData()
+//    }
 
     override fun showProgressBar(show: Boolean) {
         if(progressBarAllEmployers != null){
             if(show){
-                progressBarAllEmployers.visibility = View.VISIBLE
+                progressBarAllEmployers?.visibility = View.VISIBLE
             }else{
-                progressBarAllEmployers.visibility = View.GONE
+                progressBarAllEmployers?.visibility = View.GONE
             }
         }
 
@@ -70,25 +84,37 @@ class AllEmployersFragment : Fragment(), AllEmployersContract.View {
     override fun showData(list: MutableList<Employer>) {
 
         if(list.isEmpty()){
-            allEmployersRecyclerViewId.visibility = View.GONE
-            clNoResults.visibility = View.VISIBLE
+            allEmployersRecyclerViewId?.visibility = View.GONE
+            clNoResults?.visibility = View.VISIBLE
         }else{
-            allEmployersRecyclerViewId.visibility = View.VISIBLE
-            clNoResults.visibility = View.GONE
+            allEmployersRecyclerViewId?.visibility = View.VISIBLE
+            clNoResults?.visibility = View.GONE
 
-            var adapter = AllEmployersAdapter(context!!, list)
-            allEmployersRecyclerViewId.layoutManager = LinearLayoutManager(context)
-            allEmployersRecyclerViewId.adapter = adapter
+            if(context != null){
+                adapter = AllEmployersAdapter(context!!, list)
+                allEmployersRecyclerViewId?.layoutManager = LinearLayoutManager(context)
+                allEmployersRecyclerViewId?.setHasFixedSize(true)
+                allEmployersRecyclerViewId?.adapter = adapter
+
+//                adapter?.notifyDataSetChanged()
+            }
+
+
         }
 
     }
-
 
 
     override fun onDestroyView() {
         super.onDestroyView()
 
         presenter.destroy()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+//        presenter.destroy()
     }
 
 }

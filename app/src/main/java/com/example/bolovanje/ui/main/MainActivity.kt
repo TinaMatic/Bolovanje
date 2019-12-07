@@ -1,21 +1,26 @@
-package com.example.bolovanje.ui
+package com.example.bolovanje.ui.main
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.bolovanje.SickLeaveApplication
 import com.example.bolovanje.R
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
+
+    @Inject
+    lateinit var presenter: MainContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as SickLeaveApplication).getBolovanjeComponent()
+            .inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        val navView: BottomNavigationView = findViewById(R.id.nav_view) // TODO: use syntetic imports instead of find view by id https://kotlinlang.org/docs/tutorials/android-plugin.html
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
@@ -23,11 +28,22 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
-                R.id.navigation_dashboard,
-                R.id.navigation_notifications
+                R.id.navigation_search,
+                R.id.navigation_employers
             )
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
-        nav_view.setupWithNavController(navController)
+        bottomNavigation.setupWithNavController(navController)
+
     }
+
+
+    fun enableBottomNaigation(enabled: Boolean){
+        for (i in 0 until bottomNavigation.menu.size()){
+            bottomNavigation.menu.getItem(i).isEnabled = enabled
+        }
+    }
+
+
 }

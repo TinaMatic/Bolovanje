@@ -8,8 +8,6 @@ class AllEmployersContract {
 
     interface Presenter: BaseContract.BasePresenter<View>{
         fun loadData()
-//        fun destroy()
-//        fun attach(view: AllEmployersContract.View)
     }
 
     interface View{

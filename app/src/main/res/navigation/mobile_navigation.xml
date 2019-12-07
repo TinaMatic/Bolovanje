@@ -9,16 +9,20 @@
         android:id="@+id/navigation_home"
         android:name="com.example.bolovanje.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_self"
+            app:destination="@id/navigation_employers" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_search"
         android:name="com.example.bolovanje.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_employers"
         android:name="com.example.bolovanje.ui.employers.EmployersFragment"
         android:label="@string/title_employers"
         tools:layout="@layout/fragment_employers" />

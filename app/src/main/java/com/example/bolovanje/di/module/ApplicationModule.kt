@@ -22,4 +22,6 @@ class ApplicationModule(private val context: Context) {
     fun provideSharedPreferences(): SharedPreferences{
         return PreferenceManager.getDefaultSharedPreferences(context)
     }
+
+
 }

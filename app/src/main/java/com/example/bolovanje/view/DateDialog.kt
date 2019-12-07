@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.DatePicker
@@ -15,6 +16,7 @@ import com.example.bolovanje.utils.DateUtils.Companion.getBusinessDaysForMonth
 import com.example.bolovanje.utils.DateUtils.Companion.removeAllDaysForMonth
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
+import io.reactivex.rxkotlin.flatMapIterable
 import kotlinx.android.synthetic.main.calendar.*
 import kotlinx.android.synthetic.main.calendar.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -27,14 +29,24 @@ class DateDialog (context: Context, theme: Int, private val selectedDays: Mutabl
 
     lateinit var confirmDateObservable: Observable<MutableList<Calendar>>
     lateinit var cancelObservable: Observable<Unit>
+//    var previousDates: MutableList<Calendar> = mutableListOf()
+//    var count: Int = 1
+//    var cancelCount: Int = 1
+    var view: View
 
     init {
         setCancelable(false)
 //        LayoutInflater.from(parent.context).inflate(R.layout.users_row, parent, false))
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(R.layout.calendar, null)
-
-        initDialog(view)
+        view = inflater.inflate(R.layout.calendar, null)
+//
+//        count += 1
+//        cancelCount += 1
+//        previousDates = selectedDays
+//        cancelCalendar()
+        //previousDayes were in the class DateDialog
+//        initDialog(view, previousDates)
+        initDialog(view, selectedDays)
         addClickEvents(view)
         setContentView(view)
     }
@@ -66,19 +78,47 @@ class DateDialog (context: Context, theme: Int, private val selectedDays: Mutabl
         }
 
         //handle cancel click
-        cancelObservable = rootView.btnCancel.clicks()
+        cancelObservable = rootView.btnCancel.clicks().doOnNext {
+//            previousDates.removeAll(selectedDays)
+//            initDialog(view, selectedDays)
+
+//            cancelCount -= 1
+//            cancelCalendar()
+//            cancelCount+=1
+
+        }
 
         //handle ok button click
         confirmDateObservable = rootView.btnSet.clicks()
-            .switchMap {Observable.fromCallable { selectedDays }}
+            .switchMap {Observable.fromCallable { selectedDays }
+//            .doOnNext {
+//                previousDates = selectedDays
+            }
+
+//        Log.e("dsa", previousDates.toString())
+//        confirmDateObservable.flatMapIterable {
+//            it
+//        }.subscribe {
+//            previousDates.add(it)
+//        }
 
     }
 
-    private fun initDialog(rootView: View){
-        if(selectedDays.isEmpty()){
-            selectedDays.add(Calendar.getInstance())
+    private fun initDialog(rootView: View, days: MutableList<Calendar>){
+        if(days.isEmpty()){
+            days.add(Calendar.getInstance())
         }
 
-        rootView.calSelectedDate.selectedDates = selectedDays
+//        if(days.isEmpty()){
+//            days.add(Calendar.getInstance())
+//        }
+
+        rootView.calSelectedDate.selectedDates = days
     }
+
+//    private fun cancelCalendar(){
+//        if(cancelCount.equals(count)){
+//            previousDates = selectedDays
+//        }
+//    }
 }

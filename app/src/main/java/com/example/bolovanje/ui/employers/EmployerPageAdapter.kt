@@ -29,11 +29,11 @@ class EmployerPageAdapter(fm: FragmentManager): FragmentPagerAdapter(fm) {
     override fun getPageTitle(position: Int): CharSequence? {
         when(position){
             0 -> {
-                return "SVI RADNICI"
+                return "ALL EMPLOYERS"
             }
 
             1 -> {
-                return "VISE OD 10 DANA"
+                return "MORE THAN 10 DAYS EMPLOYERS"
             }
         }
 

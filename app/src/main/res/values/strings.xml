@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bolovanje</string>
+    <string name="app_name">Sick Leave</string>
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
     <string name="title_employers">Employers</string>
@@ -7,8 +7,9 @@
     <!--    Home Screen-->
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-    <string name="doctors_excuse">Doznaka</string>
+    <string name="doctors_excuse">Excuse</string>
     <string name="submit">Submit</string>
+    <string name="home_title">Home</string>
 
     <!--    Calendar-->
     <string name="btn_none">None</string>
@@ -17,17 +18,25 @@
     <string name="btn_OK">OK</string>
 
     <!--    AllEmployers Page-->
-    <string name="number_of_days">Ukupan broj dana:</string>
-    <string name="ten_or_more_days">Ovaj mesec</string>
-    <string name="days_with_excuse">Dani sa doznakom:</string>
+    <string name="number_of_days">Total number of days:</string>
+    <string name="ten_or_more_days">Days this month</string>
+    <string name="days_with_excuse">Days with excuse:</string>
     <string name="employer_no_data_header">No results</string>
     <string name="employer_no_data_text">There aren\'t any employers</string>
+    <string name="employers_title">Employers</string>
+
+    <!-- Ten Or More Days Employer Page-->
+    <string name="ten_or_more_employers_no_data_text">There aren\'t any employers that have more then 10 days used</string>
 
     <!--    Search Page-->
     <string name="employer_name">Enter Employer Name</string>
+    <string name="btn_Search">Search</string>
+    <string name="days_this_month">List of days this month:</string>
+    <string name="search_employer_no_result">There aren\'t any employers with that name</string>
+    <string name="add_days_with_excuse">Add</string>
 
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--    Splash Page-->
+    <string name="splash_screen_text">Sick Leave Application</string>
 
 
 </resources>

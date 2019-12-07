@@ -2,6 +2,7 @@ package com.example.bolovanje.di.module
 
 import com.example.bolovanje.model.ConfirmDates
 import com.example.bolovanje.model.Employer
+import com.example.bolovanje.model.FirebaseRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,5 +20,11 @@ class EmployerModule {
 //    @Provides
 //    fun provideConfirmDatesRepository(selectedDays: MutableList<Calendar>, numOfDays: String): ConfirmDates{
 //        return ConfirmDates(selectedDays, numOfDays)
+//    }
+
+//    @Singleton
+//    @Provides
+//    fun provideFirebaseRepository(): FirebaseRepository{
+//        return FirebaseRepository
 //    }
 }

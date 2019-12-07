@@ -3,5 +3,9 @@ package com.example.bolovanje.model
 import java.util.*
 import javax.inject.Inject
 
-class Employer @Inject constructor (val firstName: String?, val lastName: String?, val excuse: Boolean, val selectedDays: MutableList<String>, val numOfDays: Int){
+class Employer @Inject constructor
+    (var firstName: String?, var lastName: String?, var excuse: Boolean,
+     var selectedDays: MutableList<String>, var numOfDays: Int,
+     var daysThisMonthList: MutableList<String>, var daysThisMonthNum: Int,
+     var daysWithExcuseList: MutableList<String>, var daysWithExcuseNum: Int){
 }

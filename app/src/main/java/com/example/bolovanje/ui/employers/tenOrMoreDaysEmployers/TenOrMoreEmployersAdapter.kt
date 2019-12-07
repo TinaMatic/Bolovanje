@@ -1,4 +1,4 @@
-package com.example.bolovanje.ui.employers.allEmployers
+package com.example.bolovanje.ui.employers.tenOrMoreDaysEmployers
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bolovanje.R
 import com.example.bolovanje.model.Employer
 
-class AllEmployersAdapter(private val context: Context, private val employerList: MutableList<Employer>):
-    RecyclerView.Adapter<AllEmployersAdapter.ViewHolder>() {
+class TenOrMoreEmployersAdapter(private val context: Context, private val employerList: List<Employer>):
+    RecyclerView.Adapter<TenOrMoreEmployersAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(context).inflate(R.layout.employers_row, parent, false)
