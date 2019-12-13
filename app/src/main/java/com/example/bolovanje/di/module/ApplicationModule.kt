@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Suppress("DEPRECATION")
+//@Suppress("DEPRECATION")
 @Module
 class ApplicationModule(private val context: Context) {
 
@@ -17,9 +17,9 @@ class ApplicationModule(private val context: Context) {
         return context
     }
 
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(): SharedPreferences{
-        return PreferenceManager.getDefaultSharedPreferences(context)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideSharedPreferences(): SharedPreferences{
+//        return PreferenceManager.getDefaultSharedPreferences(context)
+//    }
 }
