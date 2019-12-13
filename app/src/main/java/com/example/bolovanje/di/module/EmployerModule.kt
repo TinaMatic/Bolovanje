@@ -22,9 +22,4 @@ class EmployerModule {
 //        return ConfirmDates(selectedDays, numOfDays)
 //    }
 
-//    @Singleton
-//    @Provides
-//    fun provideFirebaseRepository(): FirebaseRepository{
-//        return FirebaseRepository
-//    }
 }

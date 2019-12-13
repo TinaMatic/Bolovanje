@@ -13,8 +13,8 @@ class SearchContract {
         fun searchData(searchData: String): Observable<Pair<List<Employer>, List<String>>>
         fun selectDates(dates: MutableList<Calendar>): Observable<Pair<ConfirmDates, MutableList<Calendar>>>
         fun addDaysWithExcuse(position: Int): Observable<Employer>
-//        fun deleteEmployer(databaseKey: String)
-//        fun edit()
+        fun deleteEmployer(position: Int): Observable<Boolean>
+        fun editEmployer(position: Int, firstName: String, lastName: String, selectedDays: MutableList<Calendar>): Observable<Pair<Boolean, Employer>>
     }
 
     interface View{
@@ -26,11 +26,5 @@ class SearchContract {
         fun showCalendarForAddingDatesWithExcuse(date: MutableList<Calendar>, position: Int)
         fun showCalendarForUpdatingEmployer(dates: MutableList<Calendar>, position: Int)
         fun hideCalendar()
-
     }
-//
-//    interface Model{
-//        fun onDataChanged()
-//        fun onCancelled()
-//    }
 }

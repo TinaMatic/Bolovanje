@@ -27,9 +27,6 @@ class AllEmployersFragment : Fragment(), AllEmployersContract.View {
     @Inject
     lateinit var presenter: AllEmployersContract.Presenter
 
-//    @Inject
-//    lateinit var navigator: Navigator
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,20 +48,10 @@ class AllEmployersFragment : Fragment(), AllEmployersContract.View {
 
 
     override fun onAttach(context: Context) {
-        (activity?.application as SickLeaveApplication).getBolovanjeComponent()
+        (activity?.application as SickLeaveApplication).getSickLeaveComponent()
             .inject(this) // TODO: instead of this line extend DaggerFragment to remove boilerplate code
         super.onAttach(context)
     }
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        presenter.loadData()
-//    }
-
-//    override fun onStart() {
-//        super.onStart()
-//        presenter.loadData()
-//    }
 
     override fun showProgressBar(show: Boolean) {
         if(progressBarAllEmployers != null){
@@ -95,26 +82,14 @@ class AllEmployersFragment : Fragment(), AllEmployersContract.View {
                 allEmployersRecyclerViewId?.layoutManager = LinearLayoutManager(context)
                 allEmployersRecyclerViewId?.setHasFixedSize(true)
                 allEmployersRecyclerViewId?.adapter = adapter
-
-//                adapter?.notifyDataSetChanged()
             }
-
-
         }
 
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
 
         presenter.destroy()
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-//        presenter.destroy()
-    }
-
 }

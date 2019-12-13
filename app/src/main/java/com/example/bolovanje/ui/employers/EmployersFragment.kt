@@ -32,9 +32,4 @@ class EmployersFragment : Fragment() {
         mainTabs.setupWithViewPager(viewPagerId)
         mainTabs.setTabTextColors(Color.WHITE, Color.rgb(143,186,255))
     }
-
-//    companion object{
-//        val TAG: String = EmployersFragment::class.java.simpleName
-//    }
-
 }

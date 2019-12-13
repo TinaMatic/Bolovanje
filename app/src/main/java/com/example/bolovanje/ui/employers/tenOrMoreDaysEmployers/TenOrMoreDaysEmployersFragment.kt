@@ -47,7 +47,7 @@ class TenOrMoreDaysEmployersFragment : Fragment(), TenOrMoreDaysEmployersContrac
     }
 
     override fun onAttach(context: Context) {
-        (activity?.application as SickLeaveApplication).getBolovanjeComponent()
+        (activity?.application as SickLeaveApplication).getSickLeaveComponent()
             .inject(this)
         super.onAttach(context)
 
@@ -79,8 +79,6 @@ class TenOrMoreDaysEmployersFragment : Fragment(), TenOrMoreDaysEmployersContrac
                 adapter = TenOrMoreEmployersAdapter(context!!, list)
                 tenOrMoreEmployersRecyclerViewId?.layoutManager = LinearLayoutManager(context)
                 tenOrMoreEmployersRecyclerViewId?.adapter = adapter
-
-                adapter?.notifyDataSetChanged()
             }
 
         }
@@ -90,9 +88,5 @@ class TenOrMoreDaysEmployersFragment : Fragment(), TenOrMoreDaysEmployersContrac
         super.onDestroyView()
 
         presenter.destroy()
-    }
-
-    companion object{
-        val TAG: String = TenOrMoreDaysEmployersFragment::class.java.simpleName
     }
 }

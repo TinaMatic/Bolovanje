@@ -67,7 +67,6 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
                 showProgressBar(true)
-//                hideKeyboar()
             }
             .observeOn(Schedulers.io())
             .switchMap { presenter.searchData(it) }
@@ -75,25 +74,16 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
             .subscribe ({
                 showProgressBar(false)
                 showData(it.first, it.second)
-//                showData(it)
-//                hideKeyboar()
             }, {error->
               showErrorMessage(error = error.toString())
                 showProgressBar(true)
             }))
-
-
     }
 
     override fun onAttach(context: Context) {
-        (activity?.application as SickLeaveApplication).getBolovanjeComponent()
+        (activity?.application as SickLeaveApplication).getSickLeaveComponent()
             .inject(this) // TODO: instead of this line extend DaggerFragment to remove boilerplate code
         super.onAttach(context)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        compositeDisposable.clear()
     }
 
     override fun onDestroyView() {
@@ -150,8 +140,6 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
     }
 
     override fun createTextChangeSearch(): Observable<String> {
-//        (activity as MainActivity).enableBottomNaigation(false)
-//        (activity as MainActivity).showBottomNaigation(false)
         val textChangeObservable = Observable.create<String>{ emitter->
             val textWatcher = object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) = Unit
@@ -165,18 +153,10 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
                 }
 
             }
-
-//            etEmployerName.addTextChangedListener {
-//                textWatcher
-////                (activity as MainActivity).showBottomNaigation(false)
-//            }
-//            showKeyboard()
-//            hideKeyboar()
             etEmployerName.addTextChangedListener(textWatcher)
 
             emitter.setCancellable {
                 etEmployerName.removeTextChangedListener(textWatcher)
-//                (activity as MainActivity).showBottomNaigation(true)
             }
         }
 
@@ -202,7 +182,7 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
             .setMessage("Are you sure you want to delete this employer")
             .setCancelable(false)
             .setPositiveButton("Yes"){dialog, id ->
-                FirebaseRepository.deleteEmployer(position).subscribe {
+                presenter.deleteEmployer(position).subscribe {
                     if(it){
                         Toast.makeText(context, "Employer has been deleted", Toast.LENGTH_LONG).show()
                         adapter?.employerList?.removeAt(position)
@@ -232,7 +212,7 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
                 firstNameValue = view.etFirstName.text.toString()
                 lastNameValue = view.etLastName.text.toString()
 
-                FirebaseRepository.editEmployer(position, firstNameValue!!, lastNameValue!!, selectedDatesForUpdateEmploter).subscribe {
+                presenter.editEmployer(position, firstNameValue!!, lastNameValue!!, selectedDatesForUpdateEmploter).subscribe {
                     if(it.first){
                         Toast.makeText(context, "Employer has been successfully updated", Toast.LENGTH_LONG).show()
                         adapter?.employerList!![position] = it.second
@@ -257,8 +237,6 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
     }
 
     override fun showCalendarForAddingDatesWithExcuse(date: MutableList<Calendar>, position: Int) {
-        var previousDates : MutableList<Calendar> = mutableListOf(Calendar.getInstance())
-
         datePicker = DateDialog(activity!!, R.style.DialogTheme, date)
 
         //handle the cancel button
@@ -314,7 +292,7 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
     }
 
     override fun onEditClick(position: Int,firstName: String, lastName: String, selectedDays: MutableList<String>) {
-        showEditDialog(position, firstName!!, lastName!!, selectedDays)
+        showEditDialog(position, firstName, lastName, selectedDays)
     }
 
     override fun onAddDaysWithExcuseClick(position: Int) {

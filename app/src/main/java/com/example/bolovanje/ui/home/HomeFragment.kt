@@ -72,36 +72,23 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun onAttach(context: Context) {
-        (activity?.application as SickLeaveApplication).getBolovanjeComponent()
-            .inject(this) // TODO: instead of this line extend DaggerFragment to remove boilerplate code
+        (activity?.application as SickLeaveApplication).getSickLeaveComponent()
+            .inject(this)
         super.onAttach(context)
     }
 
 
     override fun showCalendar(date: MutableList<Calendar>) {
-//        var previousDates : MutableList<Calendar> = mutableListOf(Calendar.getInstance())
-
         datePicker = DateDialog(activity!!,R.style.DialogTheme, date)
-
-//        datePicker!!.setOnCancelListener {
-//            hideCalendar()
-//        }
 
         //handle the cancel button
         compositeDisposable.add(datePicker!!.cancelObservable.subscribe {
             hideCalendar()
-
-//            presenter.selectDates(date).subscribe {
-//                previousDates = it.selectedDays!!
-//            }
         })
 
         //handle the ok button
         compositeDisposable.add(datePicker!!.confirmDateObservable.flatMap {presenter.selectDates(date)}.subscribe {
-//            confirmDates.onNext(it)
-//            previousDates = it.selectedDays!!
             hideCalendar()
-//            Log.i("Confirm date selected days ", it.selectedDays.toString())
             tvDate.text = it.dataLabel
             previousDates = it.selectedDays!!
 
@@ -113,7 +100,6 @@ class HomeFragment : Fragment(), HomeContract.View {
     override fun hideCalendar() {
         if(datePicker != null && datePicker!!.isShowing){
             datePicker!!.dismiss()
-//            dates.clear()
         }
     }
 
@@ -132,12 +118,7 @@ class HomeFragment : Fragment(), HomeContract.View {
         lastName = etLastName.text.toString()
         excuse = cbExcuse.isChecked
 
-//        hideKeyboar()
-
         presenter.writeData(firstName, lastName, excuse)
-//        btnSubmit.clicks().subscribe(publishFromContract)
-//        publishFromContract.map{}.subscribe()
-
     }
 
     override fun showSuccessfulMessage(){
@@ -151,16 +132,6 @@ class HomeFragment : Fragment(), HomeContract.View {
     override fun showSuccessfulUpdateMessage() {
         Toast.makeText(activity, "${firstName} ${lastName} has been successfully updated", Toast.LENGTH_LONG).show()
     }
-
-//    fun showKeyboard(){
-//        val inputMethodManager = view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//        inputMethodManager.showSoftInput(etEmployerName, InputMethodManager.SHOW_IMPLICIT)
-//    }
-//
-//    fun hideKeyboar(){
-//        val inputMethodManager = view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//        inputMethodManager.hideSoftInputFromWindow(etEmployerName.windowToken, 0)
-//    }
 
     fun resetData(){
         etFirstName.setText("")
@@ -179,6 +150,4 @@ class HomeFragment : Fragment(), HomeContract.View {
         super.onDestroyView()
         presenter.destroy()
     }
-
-
 }

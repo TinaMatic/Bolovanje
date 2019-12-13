@@ -13,11 +13,8 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(){
 
-    @Inject
-    lateinit var presenter: MainContract.Presenter
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as SickLeaveApplication).getBolovanjeComponent()
+        (application as SickLeaveApplication).getSickLeaveComponent()
             .inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

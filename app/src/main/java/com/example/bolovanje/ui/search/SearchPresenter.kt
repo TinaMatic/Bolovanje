@@ -4,7 +4,6 @@ import com.example.bolovanje.model.ConfirmDates
 import com.example.bolovanje.model.Employer
 import com.example.bolovanje.model.FirebaseRepository
 import com.example.bolovanje.utils.DateUtils
-import com.google.firebase.database.*
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
@@ -16,10 +15,8 @@ class SearchPresenter: SearchContract.Presenter {
     var compositeDisposable = CompositeDisposable()
     var selectedDates = mutableListOf<Calendar>(Calendar.getInstance())
     var datesThisMonthList = mutableListOf<Calendar>(Calendar.getInstance())
-    var mFirebaseDatabaseRef: DatabaseReference = FirebaseDatabase.getInstance().reference
     var searchList: MutableList<Employer> = mutableListOf()
     var listOfDatabseKeys: MutableList<String> = mutableListOf()
-    lateinit var databaseKey: String
 
     @Inject
     lateinit var employers: Employer
@@ -33,13 +30,35 @@ class SearchPresenter: SearchContract.Presenter {
     }
 
     override fun searchData(searchData: String): Observable<Pair<List<Employer>, List<String>>> {
-
-
-        val searchData = FirebaseRepository.searchData(searchData)
-
-        return searchData.map {
-            Pair(it, FirebaseRepository.listOfDatabseKeys)
+        return Observable.create<Pair<List<Employer>, List<String>>> { emitter ->
+            FirebaseRepository.readAllData().subscribe {
+                if(checkIfSearchDataExists(it.first, searchData, it.second).first.isNotEmpty()){
+                    emitter.onNext(Pair(checkIfSearchDataExists(it.first, searchData, it.second).first,
+                        checkIfSearchDataExists(it.first, searchData, it.second).second))
+                }else{
+                    emitter.onNext(Pair(listOf(), listOf()))
+                }
+            }
         }
+    }
+
+    private fun checkIfSearchDataExists(employerList: List<Employer>, searchData: String, listOfKeys: List<String>): Pair<List<Employer>, List<String>>{
+         searchList.clear()
+            listOfDatabseKeys.clear()
+
+            if(employerList.isNotEmpty()){
+                var count = 0
+                employerList.forEach {employer->
+                    if(employer.firstName!!.contains(searchData, true) || employer.lastName!!.contains(searchData, true)){
+                        searchList.add(employer)
+                        listOfDatabseKeys.add(listOfKeys[count])
+                    }
+                    count +=1
+                }
+            }
+
+        return Pair(searchList, listOfDatabseKeys)
+
     }
 
     override fun selectDates(dates: MutableList<Calendar>): Observable<Pair<ConfirmDates, MutableList<Calendar>>> {
@@ -72,6 +91,14 @@ class SearchPresenter: SearchContract.Presenter {
     }
 
     override fun addDaysWithExcuse(position: Int): Observable<Employer> {
-        return FirebaseRepository.addDaysWithExcuse(position, selectedDates, datesThisMonthList)
+        return FirebaseRepository.addDaysWithExcuse(listOfDatabseKeys[position], selectedDates, datesThisMonthList)
+    }
+
+    override fun deleteEmployer(position: Int): Observable<Boolean> {
+        return FirebaseRepository.deleteEmployer(listOfDatabseKeys[position])
+    }
+
+    override fun editEmployer(position: Int, firstName: String, lastName: String, selectedDays: MutableList<Calendar>): Observable<Pair<Boolean, Employer>> {
+        return FirebaseRepository.editEmployer(listOfDatabseKeys[position], firstName, lastName, selectedDays)
     }
 }

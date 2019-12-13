@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Application
 import com.example.bolovanje.di.component.ApplicationComponent
 import com.example.bolovanje.di.component.DaggerApplicationComponent
-import com.example.bolovanje.di.module.ActivityModule
 import com.example.bolovanje.di.module.ApplicationModule
 import com.example.bolovanje.di.module.EmployerModule
 import com.example.bolovanje.di.module.FragmentModule
@@ -28,7 +27,6 @@ open class SickLeaveApplication: Application(), HasActivityInjector {
             .applicationModule(ApplicationModule(applicationContext))
             .employerModule(EmployerModule())
             .fragmentModule(FragmentModule())
-            .activityModule(ActivityModule())
             .build()
     }
 
@@ -36,7 +34,7 @@ open class SickLeaveApplication: Application(), HasActivityInjector {
         return activityInjector
     }
 
-    fun getBolovanjeComponent(): ApplicationComponent{
+    fun getSickLeaveComponent(): ApplicationComponent{
         return appComponent
     }
 

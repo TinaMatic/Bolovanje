@@ -52,13 +52,13 @@ class SearchAdapter (private val context: Context,
 
             var listOfDaysThisMonth: String = " "
 
-            if(!employer.daysThisMonthList.isEmpty()){
+            if(employer.daysThisMonthList.isNotEmpty()){
                 employer.daysThisMonthList.forEach {
                     listOfDaysThisMonth +=  "$it "
                 }
                 itemView.txtDaysThisMonth.text = listOfDaysThisMonth.drop(1).dropLast(1)
             }else{
-                itemView.txtDaysThisMonth.text = "Nema dana bolovanja u ovom mesecu"
+                itemView.txtDaysThisMonth.text = context.getString(R.string.no_sick_leave)
             }
 
             itemView.btnRemove.setOnClickListener {

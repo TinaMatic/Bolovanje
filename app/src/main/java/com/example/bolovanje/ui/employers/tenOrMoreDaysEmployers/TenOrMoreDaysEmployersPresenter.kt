@@ -2,8 +2,6 @@ package com.example.bolovanje.ui.employers.tenOrMoreDaysEmployers
 
 import com.example.bolovanje.model.Employer
 import com.example.bolovanje.model.FirebaseRepository
-import com.example.bolovanje.ui.employers.allEmployers.AllEmployersContract
-import com.google.firebase.database.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -20,7 +18,7 @@ class TenOrMoreDaysEmployersPresenter: TenOrMoreDaysEmployersContract.Presenter 
 
     override fun loadData() {
 
-        compositeDisposable.add(FirebaseRepository.readData()
+        compositeDisposable.add(FirebaseRepository.readAllData()
             .subscribeOn(Schedulers.io())
             .switchMap {
                 filterNumOfDays(it.first)
@@ -29,8 +27,11 @@ class TenOrMoreDaysEmployersPresenter: TenOrMoreDaysEmployersContract.Presenter 
             .subscribe (
                 {listOfEmployer->
                     if(listOfEmployer.isNotEmpty()){
+                        val tempList = listOfEmployer.sortedByDescending {
+                            it.numOfDays
+                        }
                         view.showProgressBar(false)
-                        view.showData(listOfEmployer)
+                        view.showData(tempList)
                     }else{
                         view.showProgressBar(false)
                         view.showData(emptyList())
