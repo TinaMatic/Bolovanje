@@ -15,6 +15,7 @@ class SearchContract {
         fun addDaysWithExcuse(position: Int): Observable<Employer>
         fun deleteEmployer(position: Int): Observable<Boolean>
         fun editEmployer(position: Int, firstName: String, lastName: String, selectedDays: MutableList<Calendar>): Observable<Pair<Boolean, Employer>>
+        fun resetDatesForNewMonth()
     }
 
     interface View{

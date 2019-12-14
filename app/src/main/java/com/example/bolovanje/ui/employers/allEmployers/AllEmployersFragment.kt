@@ -39,6 +39,7 @@ class AllEmployersFragment : Fragment(), AllEmployersContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         presenter.attach(this)
+        presenter.resetDatesForNewMonth()
         presenter.loadData()
 
         clNoResults.findViewById<TextView>(R.id.tvNoResultText)
@@ -46,6 +47,10 @@ class AllEmployersFragment : Fragment(), AllEmployersContract.View {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.resetDatesForNewMonth()
+    }
 
     override fun onAttach(context: Context) {
         (activity?.application as SickLeaveApplication).getSickLeaveComponent()

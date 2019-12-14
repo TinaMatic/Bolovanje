@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/employersCardView"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

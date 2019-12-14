@@ -55,6 +55,7 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
         super.onViewCreated(view, savedInstanceState)
 
         presenter.attach(this)
+        presenter.resetDatesForNewMonth()
 
         clNoResultsSearch.findViewById<TextView>(R.id.tvNoResultText)
             .text = getString(R.string.search_employer_no_result)
@@ -78,6 +79,11 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
               showErrorMessage(error = error.toString())
                 showProgressBar(true)
             }))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.resetDatesForNewMonth()
     }
 
     override fun onAttach(context: Context) {

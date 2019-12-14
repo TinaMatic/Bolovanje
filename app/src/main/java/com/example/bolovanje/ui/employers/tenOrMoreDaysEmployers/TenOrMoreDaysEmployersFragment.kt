@@ -39,11 +39,17 @@ class TenOrMoreDaysEmployersFragment : Fragment(), TenOrMoreDaysEmployersContrac
         super.onViewCreated(view, savedInstanceState)
 
         presenter.attach(this)
+        presenter.resetDatesForNewMonth()
         presenter.loadData()
 
         clNoResultsTenOrMoreDaysEmployer.findViewById<TextView>(R.id.tvNoResultText)
             .text = getString(R.string.ten_or_more_employers_no_data_text)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.resetDatesForNewMonth()
     }
 
     override fun onAttach(context: Context) {
