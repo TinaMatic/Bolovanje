@@ -259,57 +259,6 @@ object FirebaseRepository {
                 count += 1
             }
         })
-
-//        mFirebaseDatabaseRef.child("Employer")
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    if (dataSnapshot != null) {
-//                        val orderSnapshot = dataSnapshot.children
-//
-//                        for (data in orderSnapshot) {
-//                            val listOfDatesThisMonth: MutableList<String> = mutableListOf()
-//                            val key = data.key
-//                            val datesThisMonth = data.child("daysThisMonthList").value.toString()
-//                            val selectedDays = data.child("selectedDays").value.toString()
-//
-//                            if (datesThisMonth != "null") {
-//                                val tempListOfDates =
-//                                    datesThisMonth.drop(1).dropLast(1).split(", ").toMutableList()
-//
-//                                if (tempListOfDates[0].drop(3) != thisMonth.toString()) {
-//                                    //reset daysThisMonthList to null and daysThisMonthNum to 0
-//                                    Log.e("das", thisMonth.toString())
-//                                    mFirebaseDatabaseRef.child("Employer").child(key!!)
-//                                        .child("daysThisMonthNum").setValue(0)
-//                                    mFirebaseDatabaseRef.child("Employer").child(key)
-//                                        .child("daysThisMonthList").setValue(null)
-//                                }
-//                            }
-//
-//                            if (selectedDays != "null") {
-//                                val tempListOfSelectedDates =
-//                                    selectedDays.drop(1).dropLast(1).split(", ").toMutableList()
-//
-//                                tempListOfSelectedDates.forEach {
-//                                    if (it.drop(3).equals(thisMonth.toString())) {
-//                                        listOfDatesThisMonth.add(it)
-//                                    }
-//                                }
-//                            }
-//                            mFirebaseDatabaseRef.child("Employer").child(key!!)
-//                                .child("daysThisMonthNum").setValue(listOfDatesThisMonth.size)
-//                            mFirebaseDatabaseRef.child("Employer").child(key)
-//                                .child("daysThisMonthList").setValue(listOfDatesThisMonth)
-//                        }
-//                    }
-//                }
-//
-//                override fun onCancelled(p0: DatabaseError) {
-//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//                }
-//
-//            })
     }
 }
 
