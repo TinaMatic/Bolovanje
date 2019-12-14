@@ -8,6 +8,7 @@ class TenOrMoreDaysEmployersContract {
 
     interface Presenter: BaseContract.BasePresenter<View>{
         fun loadData()
+        fun resetDatesForNewMonth()
     }
 
     interface View{

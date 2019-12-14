@@ -101,4 +101,8 @@ class SearchPresenter: SearchContract.Presenter {
     override fun editEmployer(position: Int, firstName: String, lastName: String, selectedDays: MutableList<Calendar>): Observable<Pair<Boolean, Employer>> {
         return FirebaseRepository.editEmployer(listOfDatabseKeys[position], firstName, lastName, selectedDays)
     }
+
+    override fun resetDatesForNewMonth() {
+        FirebaseRepository.resetDatesForNewMonth()
+    }
 }

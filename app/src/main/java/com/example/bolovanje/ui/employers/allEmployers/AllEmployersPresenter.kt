@@ -45,6 +45,10 @@ class AllEmployersPresenter : AllEmployersContract.Presenter {
            }))
     }
 
+    override fun resetDatesForNewMonth() {
+        FirebaseRepository.resetDatesForNewMonth()
+    }
+
 
     override fun attach(view: AllEmployersContract.View) {
         this.view = view

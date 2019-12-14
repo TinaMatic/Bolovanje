@@ -43,6 +43,10 @@ class TenOrMoreDaysEmployersPresenter: TenOrMoreDaysEmployersContract.Presenter 
                 }))
     }
 
+    override fun resetDatesForNewMonth() {
+        FirebaseRepository.resetDatesForNewMonth()
+    }
+
     private fun filterNumOfDays(listOfEmployers: List<Employer>): Observable<List<Employer>> {
         return Observable.fromCallable {
             listOfEmployers.filter {

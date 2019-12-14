@@ -4,16 +4,19 @@ import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 
 object FirebaseRepository {
-    val mFirebaseDatabaseRef: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private val mFirebaseDatabaseRef: DatabaseReference = FirebaseDatabase.getInstance().reference
+    var compositeDisposable = CompositeDisposable()
 
     fun readAllData(): Observable<Pair<List<Employer>, List<String>> >{
         return Observable.create {emitter->
 
             val listOfEmployer = arrayListOf<Employer>()
             val listOfKeys = arrayListOf<String>()
+
             mFirebaseDatabaseRef.child("Employer").orderByChild("numOfDays")
                 .addListenerForSingleValueEvent(object :ValueEventListener{
 
@@ -22,8 +25,8 @@ object FirebaseRepository {
                         if (dataSnapshot.value != null) {
 
                             for (employer in orderSnapshot) {
-                                val selectedDayesList = mutableListOf<String>()
-                                val dayesThisMonthList = mutableListOf<String>()
+                                val selectedDaysList = mutableListOf<String>()
+                                val daysThisMonthList = mutableListOf<String>()
                                 val daysWithExcuseList = mutableListOf<String>()
 
                                 val databaseKey = employer.key!!
@@ -40,7 +43,7 @@ object FirebaseRepository {
                                     employer.child("selectedDays").apply {
                                         if (hasChildren()){
                                             children.forEach {
-                                                selectedDayesList.add(it.value.toString())
+                                                selectedDaysList.add(it.value.toString())
                                             }
                                         }
                                     }
@@ -51,7 +54,7 @@ object FirebaseRepository {
                                     employer.child("daysThisMonthList").apply {
                                         if (hasChildren()){
                                             children.forEach {
-                                                dayesThisMonthList.add(it.value.toString())
+                                                daysThisMonthList.add(it.value.toString())
                                             }
                                         }
                                     }
@@ -70,8 +73,8 @@ object FirebaseRepository {
 
 
                                 val tempEmployer = Employer(firstName, lastName, excuse,
-                                    selectedDayesList, numOfDays.toInt(),
-                                    dayesThisMonthList, numOfDaysThisMonth.toInt(),
+                                    selectedDaysList, numOfDays.toInt(),
+                                    daysThisMonthList, numOfDaysThisMonth.toInt(),
                                     daysWithExcuseList, numOfDaysWithExcuse.toInt())
 
                                 listOfEmployer.add(tempEmployer)
@@ -100,8 +103,8 @@ object FirebaseRepository {
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         //val databaseKey = dataSnapshot.key
-                        val selectedDayesList = mutableListOf<String>()
-                        val dayesThisMonthList = mutableListOf<String>()
+                        val selectedDaysList = mutableListOf<String>()
+                        val daysThisMonthList = mutableListOf<String>()
                         val daysWithExcuseList = mutableListOf<String>()
 
                         val firstName = dataSnapshot.child("firstName").value.toString().trim()
@@ -115,7 +118,7 @@ object FirebaseRepository {
                             dataSnapshot.child("selectedDays").apply {
                                 if (hasChildren()){
                                     children.forEach {
-                                        selectedDayesList.add(it.value.toString())
+                                        selectedDaysList.add(it.value.toString())
                                     }
                                 }
                             }
@@ -126,7 +129,7 @@ object FirebaseRepository {
                             dataSnapshot.child("daysThisMonthList").apply {
                                 if (hasChildren()){
                                     children.forEach {
-                                        dayesThisMonthList.add(it.value.toString())
+                                        daysThisMonthList.add(it.value.toString())
                                     }
                                 }
                             }
@@ -145,8 +148,8 @@ object FirebaseRepository {
 
 
                         val tempEmployer = Employer(firstName, lastName, excuse,
-                            selectedDayesList, numOfDays.toInt(),
-                            dayesThisMonthList, numOfDaysThisMonth.toInt(),
+                            selectedDaysList, numOfDays.toInt(),
+                            daysThisMonthList, numOfDaysThisMonth.toInt(),
                             daysWithExcuseList, numOfDaysWithExcuse.toInt())
 
                         emitter.onNext(tempEmployer)
@@ -226,57 +229,87 @@ object FirebaseRepository {
 
     fun resetDatesForNewMonth() {
         val thisMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
+        val listOfDatesThisMonth: MutableList<String> = mutableListOf()
+        var count = 0
 
-        mFirebaseDatabaseRef.child("Employer")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+        compositeDisposable.add(readAllData().subscribe {(employers, keys)->
 
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot != null) {
-                        val orderSnapshot = dataSnapshot.children
+            employers.forEach {
+                listOfDatesThisMonth.clear()
 
-                        for (data in orderSnapshot) {
-                            val listOfDatesThisMonth: MutableList<String> = mutableListOf()
-                            val key = data.key
-                            val datesThisMonth = data.child("daysThisMonthList").value.toString()
-                            val selectedDays = data.child("selectedDays").value.toString()
+                if(it.daysThisMonthList.isNotEmpty() && it.daysThisMonthList[0].drop(3) != thisMonth.toString()){
+                    //reset daysThisMonthList to null and daysThisMonthNum to 0
+                    mFirebaseDatabaseRef.child("Employer").child(keys[count])
+                        .child("daysThisMonthNum").setValue(0)
+                    mFirebaseDatabaseRef.child("Employer").child(keys[count])
+                        .child("daysThisMonthList").setValue(null)
+                }
 
-                            if (datesThisMonth != "null") {
-                                val tempListOfDates =
-                                    datesThisMonth.drop(1).dropLast(1).split(", ").toMutableList()
-
-                                if (tempListOfDates[0].drop(3) != thisMonth.toString()) {
-                                    //reset daysThisMonthList to null and daysThisMonthNum to 0
-                                    Log.e("das", thisMonth.toString())
-                                    mFirebaseDatabaseRef.child("Employer").child(key!!)
-                                        .child("daysThisMonthNum").setValue(0)
-                                    mFirebaseDatabaseRef.child("Employer").child(key!!)
-                                        .child("daysThisMonthList").setValue(null)
-                                }
-                            }
-
-                            if (selectedDays != "null") {
-                                val tempListOfSelectedDates =
-                                    selectedDays.drop(1).dropLast(1).split(", ").toMutableList()
-
-                                tempListOfSelectedDates.forEach {
-                                    if (it.drop(3).equals(thisMonth.toString())) {
-                                        listOfDatesThisMonth.add(it)
-                                    }
-                                }
-                            }
-                            mFirebaseDatabaseRef.child("Employer").child(key!!)
-                                .child("daysThisMonthNum").setValue(listOfDatesThisMonth.size)
-                            mFirebaseDatabaseRef.child("Employer").child(key!!)
-                                .child("daysThisMonthList").setValue(listOfDatesThisMonth)
-                        }
+                it.selectedDays.forEach {selectedDay->
+                    if(selectedDay.drop(3).equals(thisMonth.toString())){
+                        listOfDatesThisMonth.add(selectedDay)
                     }
                 }
 
-                override fun onCancelled(p0: DatabaseError) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
+                mFirebaseDatabaseRef.child("Employer").child(keys[count])
+                    .child("daysThisMonthNum").setValue(listOfDatesThisMonth.size)
+                mFirebaseDatabaseRef.child("Employer").child(keys[count])
+                    .child("daysThisMonthList").setValue(listOfDatesThisMonth)
 
-            })
+                count += 1
+            }
+        })
+
+//        mFirebaseDatabaseRef.child("Employer")
+//            .addListenerForSingleValueEvent(object : ValueEventListener {
+//
+//                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                    if (dataSnapshot != null) {
+//                        val orderSnapshot = dataSnapshot.children
+//
+//                        for (data in orderSnapshot) {
+//                            val listOfDatesThisMonth: MutableList<String> = mutableListOf()
+//                            val key = data.key
+//                            val datesThisMonth = data.child("daysThisMonthList").value.toString()
+//                            val selectedDays = data.child("selectedDays").value.toString()
+//
+//                            if (datesThisMonth != "null") {
+//                                val tempListOfDates =
+//                                    datesThisMonth.drop(1).dropLast(1).split(", ").toMutableList()
+//
+//                                if (tempListOfDates[0].drop(3) != thisMonth.toString()) {
+//                                    //reset daysThisMonthList to null and daysThisMonthNum to 0
+//                                    Log.e("das", thisMonth.toString())
+//                                    mFirebaseDatabaseRef.child("Employer").child(key!!)
+//                                        .child("daysThisMonthNum").setValue(0)
+//                                    mFirebaseDatabaseRef.child("Employer").child(key)
+//                                        .child("daysThisMonthList").setValue(null)
+//                                }
+//                            }
+//
+//                            if (selectedDays != "null") {
+//                                val tempListOfSelectedDates =
+//                                    selectedDays.drop(1).dropLast(1).split(", ").toMutableList()
+//
+//                                tempListOfSelectedDates.forEach {
+//                                    if (it.drop(3).equals(thisMonth.toString())) {
+//                                        listOfDatesThisMonth.add(it)
+//                                    }
+//                                }
+//                            }
+//                            mFirebaseDatabaseRef.child("Employer").child(key!!)
+//                                .child("daysThisMonthNum").setValue(listOfDatesThisMonth.size)
+//                            mFirebaseDatabaseRef.child("Employer").child(key)
+//                                .child("daysThisMonthList").setValue(listOfDatesThisMonth)
+//                        }
+//                    }
+//                }
+//
+//                override fun onCancelled(p0: DatabaseError) {
+//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//                }
+//
+//            })
     }
 }
 
