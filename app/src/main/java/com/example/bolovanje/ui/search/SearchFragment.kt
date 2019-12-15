@@ -206,7 +206,7 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
     }
 
 
-    private fun showEditDialog(position: Int, firstName: String, lastName: String, selectedDays: MutableList<String>){
+    private fun showEditDialog(position: Int, firstName: String, lastName: String, selectedDays: MutableList<Calendar>){
         val view = LayoutInflater.from(context).inflate(R.layout.edit_employer_dialog, null)
         var firstNameValue: String?
         var lastNameValue: String?
@@ -238,7 +238,7 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
         view.etFirstName.setText(firstName)
         view.etLastName.setText(lastName)
         view.ivCalendar.setOnClickListener {
-            showCalendarForUpdatingEmployer(dates, position)
+            showCalendarForUpdatingEmployer(selectedDays, position)
         }
     }
 
@@ -297,12 +297,11 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
         showDeleteDialog(position)
     }
 
-    override fun onEditClick(position: Int,firstName: String, lastName: String, selectedDays: MutableList<String>) {
+    override fun onEditClick(position: Int,firstName: String, lastName: String, selectedDays: MutableList<Calendar>) {
         showEditDialog(position, firstName, lastName, selectedDays)
     }
 
     override fun onAddDaysWithExcuseClick(position: Int) {
         showCalendarForAddingDatesWithExcuse(dates, position)
     }
-
 }
