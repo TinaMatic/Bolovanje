@@ -29,14 +29,16 @@ object FirebaseRepository {
                                 val selectedDaysList = mutableListOf<String>()
                                 val daysThisMonthList = mutableListOf<String>()
                                 val daysWithExcuseList = mutableListOf<String>()
+                                val daysWithoutExcuseList = mutableListOf<String>()
 
                                 val databaseKey = employer.key!!
                                 val firstName = employer.child("firstName").value.toString().trim()
                                 val lastName = employer.child("lastName").value.toString().trim()
                                 val excuse = employer.child("excuse").value as Boolean
-                                val numOfDays = employer.child("numOfDays").value.toString().trim()
-                                val numOfDaysThisMonth = employer.child("daysThisMonthNum").value.toString().trim()
+                                val numOfDays = employer.child("numOfDays").value.toString()
+                                val numOfDaysThisMonth = employer.child("daysThisMonthNum").value.toString()
                                 val numOfDaysWithExcuse = employer.child("daysWithExcuseNum").value.toString()
+                                val numOfDaysWithoutExcuse = employer.child("daysWithoutExcuseNum").value.toString()
 
                                 listOfKeys.add(databaseKey)
 
@@ -72,11 +74,22 @@ object FirebaseRepository {
                                     }
                                 }
 
+                                if(employer.hasChild("daysWithoutExcuseList")){
+                                    employer.child("daysWithoutExcuseList").apply {
+                                        if (hasChildren()){
+                                            children.forEach {
+                                                daysWithoutExcuseList.add(it.value.toString())
+                                            }
+                                        }
+                                    }
+                                }
+
 
                                 val tempEmployer = Employer(firstName, lastName, excuse,
                                     selectedDaysList, numOfDays.toInt(),
                                     daysThisMonthList, numOfDaysThisMonth.toInt(),
-                                    daysWithExcuseList, numOfDaysWithExcuse.toInt())
+                                    daysWithExcuseList, numOfDaysWithExcuse.toInt(),
+                                    daysWithoutExcuseList, numOfDaysWithoutExcuse.toInt())
 
                                 listOfEmployer.add(tempEmployer)
                             }
@@ -107,13 +120,15 @@ object FirebaseRepository {
                         val selectedDaysList = mutableListOf<String>()
                         val daysThisMonthList = mutableListOf<String>()
                         val daysWithExcuseList = mutableListOf<String>()
+                        val daysWithoutExcuseList = mutableListOf<String>()
 
                         val firstName = dataSnapshot.child("firstName").value.toString().trim()
                         val lastName = dataSnapshot.child("lastName").value.toString().trim()
                         val excuse = dataSnapshot.child("excuse").value as Boolean
-                        val numOfDays = dataSnapshot.child("numOfDays").value.toString().trim()
-                        val numOfDaysThisMonth = dataSnapshot.child("daysThisMonthNum").value.toString().trim()
+                        val numOfDays = dataSnapshot.child("numOfDays").value.toString()
+                        val numOfDaysThisMonth = dataSnapshot.child("daysThisMonthNum").value.toString()
                         val numOfDaysWithExcuse = dataSnapshot.child("daysWithExcuseNum").value.toString()
+                        val numOfDaysWithoutExcuse = dataSnapshot.child("daysWithoutExcuseNum").value.toString()
 
                         if(dataSnapshot.hasChild("selectedDays")){
                             dataSnapshot.child("selectedDays").apply {
@@ -147,11 +162,22 @@ object FirebaseRepository {
                             }
                         }
 
+                        if(dataSnapshot.hasChild("daysWithoutExcuseList")){
+                            dataSnapshot.child("daysWithoutExcuseList").apply {
+                                if (hasChildren()){
+                                    children.forEach {
+                                        daysWithoutExcuseList.add(it.value.toString())
+                                    }
+                                }
+                            }
+                        }
+
 
                         val tempEmployer = Employer(firstName, lastName, excuse,
                             selectedDaysList, numOfDays.toInt(),
                             daysThisMonthList, numOfDaysThisMonth.toInt(),
-                            daysWithExcuseList, numOfDaysWithExcuse.toInt())
+                            daysWithExcuseList, numOfDaysWithExcuse.toInt(),
+                            daysWithoutExcuseList, numOfDaysWithoutExcuse.toInt())
 
                         emitter.onNext(tempEmployer)
                     }
@@ -199,7 +225,7 @@ object FirebaseRepository {
                 val employer = Employer(firstName, lastName, false,
                     formatDates(selectedDays), formatDates(selectedDays).size,
                     formatDates(newListOfDaysThisMonth), formatDates(newListOfDaysThisMonth).size,
-                    it.daysWithExcuseList, it.daysWithExcuseNum)
+                    it.daysWithExcuseList, it.daysWithExcuseNum, it.daysWithoutExcuseList, it.daysWithoutExcuseNum)
 
                 mFirebaseDatabaseRef.child("Employer").child(key)
                     .setValue(employer).addOnCompleteListener {task: Task<Void> ->
@@ -235,7 +261,8 @@ object FirebaseRepository {
                 employerObj = Employer(employer.firstName, employer.lastName, true,
                     employer.selectedDays, employer.selectedDays.distinct().size,
                     employer.daysThisMonthList.distinct() as MutableList<String>, employer.daysThisMonthList.distinct().size,
-                    employer.daysWithExcuseList.distinct() as MutableList<String>, employer.daysWithExcuseList.distinct().size)
+                    employer.daysWithExcuseList.distinct() as MutableList<String>, employer.daysWithExcuseList.distinct().size,
+                    employer.daysWithoutExcuseList, employer.daysWithoutExcuseNum)
 
                     emitter.onNext(employerObj)
             }

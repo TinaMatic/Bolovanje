@@ -35,9 +35,11 @@
     <string name="search_employer_no_result">There aren\'t any employers with that name</string>
     <string name="add_days_with_excuse">Add</string>
     <string name="no_sick_leave">There are no sick leaves in this month</string>
+    <string name="days_without_excuse">Days without excuse:</string>
 
     <!--    Splash Page-->
     <string name="splash_screen_text">Sick Leave Application</string>
+
 
 
 </resources>

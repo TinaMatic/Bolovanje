@@ -44,6 +44,7 @@ class SearchAdapter (private val context: Context,
             itemView.txtNumberOfDays.text = employer.numOfDays.toString()
             itemView.txtTenOrMoreDays.text = employer.daysThisMonthNum.toString()
             itemView.txtDaysWithExcuse.text = employer.daysWithExcuseNum.toString()
+            itemView.txtDaysWithoutExcuse.text = employer.daysWithoutExcuseNum.toString()
             itemView.txtDaysThisMonth.text = ""
 
             var listOfDaysThisMonth: String = ""

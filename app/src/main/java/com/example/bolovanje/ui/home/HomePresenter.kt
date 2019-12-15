@@ -21,6 +21,7 @@ class HomePresenter: HomeContract.Presenter {
     var numOfDays: Int = 1
     var daysThisMonthList = mutableListOf<Calendar>(Calendar.getInstance())
     var daysWithExcuseList : MutableList<Calendar> = mutableListOf()
+    var daysWithoutExcuseList : MutableList<Calendar> = mutableListOf()
     var mFirebaseDatabaseRef: DatabaseReference = FirebaseDatabase.getInstance().reference
     var compositeDisposable = CompositeDisposable()
 
@@ -70,14 +71,22 @@ class HomePresenter: HomeContract.Presenter {
             selectedDates.forEach {
                 daysWithExcuseList.add(it)
             }
+        }else{
+            selectedDates.forEach {
+                daysWithoutExcuseList.add(it)
+            }
         }
 
         val formattedAllSelectedDates= formatDates(selectedDates)
         val formattedDaysThisMonth = formatDates(daysThisMonthList)
         val formattedDaysWithExcuse = formatDates(daysWithExcuseList)
+        val formattedDaysWithoutExcuse = formatDates(daysWithoutExcuseList)
 
-        employer = Employer(firstName, lastName, excuse,  formattedAllSelectedDates,
-            numOfDays, formattedDaysThisMonth, daysThisMonthList.size, formattedDaysWithExcuse, daysWithExcuseList.size)
+        employer = Employer(firstName, lastName, excuse,
+            formattedAllSelectedDates, numOfDays,
+            formattedDaysThisMonth, daysThisMonthList.size,
+            formattedDaysWithExcuse, daysWithExcuseList.size,
+            formattedDaysWithoutExcuse, daysWithoutExcuseList.size)
 
         FirebaseRepository.readAllData()
             .subscribe ({
@@ -94,7 +103,7 @@ class HomePresenter: HomeContract.Presenter {
             var count = 0
             for(data in listOfEmployers) {
                 if (checkIfEmployerExists(firstName, lastName, data.firstName!!, data.lastName!!)){
-                    updateEmployer(data, selectedDates, daysThisMonthList, daysWithExcuseList, listOfKeys[count])
+                    updateEmployer(data, selectedDates, daysThisMonthList, daysWithExcuseList, daysWithoutExcuseList, listOfKeys[count])
                     doesExist = true
                     break
                 }else{
@@ -118,11 +127,12 @@ class HomePresenter: HomeContract.Presenter {
 
     private fun updateEmployer(updatedEmployer: Employer, selectedDays: MutableList<Calendar>,
                        daysThisMonth: MutableList<Calendar>, daysWithExcuse: MutableList<Calendar>,
-                       databaseKey: String){
+                       daysWithoutExcuse: MutableList<Calendar>, databaseKey: String){
         val updatedEmployerObj = Employer(updatedEmployer.firstName, updatedEmployer.lastName, updatedEmployer.excuse,
             updateEmployerDates(updatedEmployer.selectedDays, selectedDays), updateEmployerDates(updatedEmployer.selectedDays, selectedDays).size,
             updateEmployerDates(updatedEmployer.daysThisMonthList, daysThisMonth), updateEmployerDates(updatedEmployer.daysThisMonthList, daysThisMonth).size,
-            updateEmployerDates(updatedEmployer.daysWithExcuseList, daysWithExcuse), updateEmployerDates(updatedEmployer.daysWithExcuseList, daysWithExcuse).size)
+            updateEmployerDates(updatedEmployer.daysWithExcuseList, daysWithExcuse), updateEmployerDates(updatedEmployer.daysWithExcuseList, daysWithExcuse).size,
+            updateEmployerDates(updatedEmployer.daysWithoutExcuseList, daysWithoutExcuse), updateEmployerDates(updatedEmployer.daysWithoutExcuseList, daysWithoutExcuse).size)
 
         mFirebaseDatabaseRef.child("Employer").child(databaseKey).setValue(updatedEmployerObj)
             .addOnCompleteListener {
