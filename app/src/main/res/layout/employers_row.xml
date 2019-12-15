@@ -111,6 +111,31 @@
                 android:textSize="18sp"
                 android:layout_marginBottom="5dp"/>
 
+            <TextView
+                android:id="@+id/txtDaysWithoutExcuseLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDaysWithExcuseLabel"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@id/civEmployersProfile"
+                android:text="@string/days_without_excuse"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDaysWithoutExcuse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDaysWithExcuse"
+                android:layout_marginTop="5dp"
+                android:layout_alignLeft="@id/txtTenOrMoreDays"
+                android:layout_toRightOf="@id/txtDaysWithExcuseLabel"
+                android:text="broj dana"
+                android:textColor="#0B1B69"
+                android:textSize="18sp"
+                android:layout_marginBottom="5dp"/>
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 

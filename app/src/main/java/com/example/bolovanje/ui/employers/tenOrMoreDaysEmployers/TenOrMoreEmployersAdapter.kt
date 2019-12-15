@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bolovanje.R
 import com.example.bolovanje.model.Employer
+import kotlinx.android.synthetic.main.employers_row.view.*
 
 class TenOrMoreEmployersAdapter(private val context: Context, private val employerList: List<Employer>):
     RecyclerView.Adapter<TenOrMoreEmployersAdapter.ViewHolder>(){
@@ -26,16 +27,13 @@ class TenOrMoreEmployersAdapter(private val context: Context, private val employ
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var employerName = itemView.findViewById<TextView>(R.id.txtEmployers)
-        var numOfAllDays = itemView.findViewById<TextView>(R.id.txtNumberOfDays)
-        var numOfDaysThisMonth = itemView.findViewById<TextView>(R.id.txtTenOrMoreDays)
-        var numOfDaysWithExcuse = itemView.findViewById<TextView>(R.id.txtDaysWithExcuse)
 
         fun bindItem(employer: Employer){
-            employerName.text = employer.firstName + " " + employer.lastName
-            numOfAllDays.text = employer.numOfDays.toString()
-            numOfDaysThisMonth.text = employer.daysThisMonthNum.toString()
-            numOfDaysWithExcuse.text = employer.daysWithExcuseNum.toString()
+            itemView.txtEmployers.text = employer.firstName + " " + employer.lastName
+            itemView.txtNumberOfDays.text = employer.numOfDays.toString()
+            itemView.txtTenOrMoreDays.text = employer.daysThisMonthNum.toString()
+            itemView.txtDaysWithExcuse.text = employer.daysWithExcuseNum.toString()
+            itemView.txtDaysWithoutExcuse.text = employer.daysWithoutExcuseNum.toString()
         }
     }
 }
