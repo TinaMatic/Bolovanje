@@ -1,16 +1,14 @@
 package com.example.bolovanje.ui.home
 
 import com.example.bolovanje.model.ConfirmDates
-import com.example.bolovanje.model.DatesRepository
-import com.example.bolovanje.model.DatesRepository.formatDates
 import com.example.bolovanje.model.Employer
 import com.example.bolovanje.model.FirebaseRepository
 import com.example.bolovanje.utils.DateUtils
+import com.example.bolovanje.utils.DateUtils.Companion.formatDates
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import org.threeten.bp.format.DateTimeFormatterBuilder
 import java.util.*
 import javax.inject.Inject
 
@@ -19,6 +17,7 @@ class HomePresenter: HomeContract.Presenter {
     private lateinit var view : HomeContract.View
 
     var selectedDates = mutableListOf<Calendar>(Calendar.getInstance())
+//    var timesInMillisList: MutableList<Long> = mutableListOf()
     var numOfDays: Int = 1
     var daysThisMonthList = mutableListOf<Calendar>(Calendar.getInstance())
     var daysWithExcuseList : MutableList<Calendar> = mutableListOf()
@@ -48,7 +47,7 @@ class HomePresenter: HomeContract.Presenter {
                 }
             }
 
-            if(!tempListDaysThisMonth.isEmpty()){
+            if(tempListDaysThisMonth.isNotEmpty()){
                 daysThisMonthList = tempListDaysThisMonth.distinct() as MutableList<Calendar>
             }else{
                 daysThisMonthList = mutableListOf()
@@ -73,7 +72,7 @@ class HomePresenter: HomeContract.Presenter {
             }
         }
 
-        val formattedAllSelectedDates=formatDates(selectedDates)
+        val formattedAllSelectedDates= formatDates(selectedDates)
         val formattedDaysThisMonth = formatDates(daysThisMonthList)
         val formattedDaysWithExcuse = formatDates(daysWithExcuseList)
 
@@ -174,7 +173,5 @@ class HomePresenter: HomeContract.Presenter {
     override fun destroy(){
         compositeDisposable.dispose()
     }
-
-
 
 }

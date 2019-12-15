@@ -1,11 +1,12 @@
 package com.example.bolovanje.model
 
-import android.util.Log
+import com.example.bolovanje.utils.DateUtils.Companion.formatDates
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
+
 
 object FirebaseRepository {
     private val mFirebaseDatabaseRef: DatabaseReference = FirebaseDatabase.getInstance().reference
@@ -181,9 +182,23 @@ object FirebaseRepository {
 
         return Observable.create<Pair<Boolean, Employer>> {emitter->
             readDataForOneEmployer(key).subscribe {
+
+                var newListOfDaysThisMonth = mutableListOf<Calendar>()
+                val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
+
+                if(selectedDays.isEmpty()){
+                    newListOfDaysThisMonth = mutableListOf(Calendar.getInstance())
+                }else{
+                    selectedDays.forEach {
+                        if(it.get(Calendar.MONTH).equals(thisMonth)){
+                            newListOfDaysThisMonth.add(it)
+                        }
+                    }
+                }
+
                 val employer = Employer(firstName, lastName, false,
-                    it.selectedDays, it.numOfDays,
-                    it.daysThisMonthList, it.daysThisMonthNum,
+                    formatDates(selectedDays), formatDates(selectedDays).size,
+                    formatDates(newListOfDaysThisMonth), formatDates(newListOfDaysThisMonth).size,
                     it.daysWithExcuseList, it.daysWithExcuseNum)
 
                 mFirebaseDatabaseRef.child("Employer").child(key)
@@ -204,9 +219,9 @@ object FirebaseRepository {
             var employerObj :Employer
 
             readDataForOneEmployer(key).subscribe {employer->
-                employer.daysWithExcuseList.addAll(DatesRepository.formatDates(selectedDays))
-                employer.selectedDays.addAll(DatesRepository.formatDates(selectedDays))
-                employer.daysThisMonthList.addAll(DatesRepository.formatDates(datesThisMonthList))
+                employer.daysWithExcuseList.addAll(formatDates(selectedDays))
+                employer.selectedDays.addAll(formatDates(selectedDays))
+                employer.daysThisMonthList.addAll(formatDates(datesThisMonthList))
 
                 mFirebaseDatabaseRef.child("Employer").child(key).child("daysWithExcuseList").setValue(employer.daysWithExcuseList.distinct())
                 mFirebaseDatabaseRef.child("Employer").child(key).child("daysWithExcuseNum").setValue(employer.daysWithExcuseList.distinct().size)
@@ -218,7 +233,7 @@ object FirebaseRepository {
                 mFirebaseDatabaseRef.child("Employer").child(key).child("daysThisMonthNum").setValue(employer.daysThisMonthList.distinct().size)
 
                 employerObj = Employer(employer.firstName, employer.lastName, true,
-                    employer.selectedDays.distinct() as MutableList<String>, employer.selectedDays.distinct().size,
+                    employer.selectedDays, employer.selectedDays.distinct().size,
                     employer.daysThisMonthList.distinct() as MutableList<String>, employer.daysThisMonthList.distinct().size,
                     employer.daysWithExcuseList.distinct() as MutableList<String>, employer.daysWithExcuseList.distinct().size)
 
@@ -237,7 +252,7 @@ object FirebaseRepository {
             employers.forEach {
                 listOfDatesThisMonth.clear()
 
-                if(it.daysThisMonthList.isNotEmpty() && it.daysThisMonthList[0].drop(3) != thisMonth.toString()){
+                if(it.daysThisMonthList.isNotEmpty() && it.daysThisMonthList[0].substring(3, 5) != thisMonth.toString()){
                     //reset daysThisMonthList to null and daysThisMonthNum to 0
                     mFirebaseDatabaseRef.child("Employer").child(keys[count])
                         .child("daysThisMonthNum").setValue(0)
@@ -246,7 +261,7 @@ object FirebaseRepository {
                 }
 
                 it.selectedDays.forEach {selectedDay->
-                    if(selectedDay.drop(3).equals(thisMonth.toString())){
+                    if(selectedDay.substring(3, 5).equals(thisMonth.toString())){
                         listOfDatesThisMonth.add(selectedDay)
                     }
                 }

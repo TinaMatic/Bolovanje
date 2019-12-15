@@ -133,7 +133,7 @@ class HomeFragment : Fragment(), HomeContract.View {
         Toast.makeText(activity, "${firstName} ${lastName} has been successfully updated", Toast.LENGTH_LONG).show()
     }
 
-    fun resetData(){
+    private fun resetData(){
         etFirstName.setText("")
         etLastName.setText("")
         cbExcuse.isChecked = false

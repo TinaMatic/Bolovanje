@@ -6,12 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bolovanje.R
-import com.example.bolovanje.model.ConfirmDates
 import com.example.bolovanje.model.Employer
-import com.example.bolovanje.utils.DateUtils
-import com.example.bolovanje.view.DateDialog
-import com.google.firebase.database.*
-import io.reactivex.Observable
+import com.example.bolovanje.utils.DateUtils.Companion.convertDatesToCalendarObj
 import kotlinx.android.synthetic.main.employers_search_row.view.*
 import java.util.*
 import javax.inject.Inject
@@ -44,19 +40,19 @@ class SearchAdapter (private val context: Context,
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         fun bindItem(employer: Employer, position: Int){
-            itemView.txtEmployers.text = employer.firstName + " " + employer.lastName
+            itemView.txtEmployers.text = "${employer.firstName} ${employer.lastName}"
             itemView.txtNumberOfDays.text = employer.numOfDays.toString()
             itemView.txtTenOrMoreDays.text = employer.daysThisMonthNum.toString()
             itemView.txtDaysWithExcuse.text = employer.daysWithExcuseNum.toString()
             itemView.txtDaysThisMonth.text = ""
 
-            var listOfDaysThisMonth: String = " "
+            var listOfDaysThisMonth: String = ""
 
             if(employer.daysThisMonthList.isNotEmpty()){
-                employer.daysThisMonthList.forEach {
-                    listOfDaysThisMonth +=  "$it "
+                employer.daysThisMonthList.sorted().forEach {
+                    listOfDaysThisMonth +=  "${it.substring(0,6)} "
                 }
-                itemView.txtDaysThisMonth.text = listOfDaysThisMonth.drop(1).dropLast(1)
+                itemView.txtDaysThisMonth.text = listOfDaysThisMonth
             }else{
                 itemView.txtDaysThisMonth.text = context.getString(R.string.no_sick_leave)
             }
@@ -66,7 +62,7 @@ class SearchAdapter (private val context: Context,
             }
 
             itemView.btnEdit.setOnClickListener {
-                onSearchItemClickListener.onEditClick(position, employer.firstName!!, employer.lastName!!, employer.selectedDays)
+                onSearchItemClickListener.onEditClick(position, employer.firstName!!, employer.lastName!!, convertDatesToCalendarObj(employer.selectedDays))
             }
 
             itemView.txtAddDaysWithExcuse.setOnClickListener{
