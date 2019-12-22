@@ -35,6 +35,7 @@ class HomePresenter: HomeContract.Presenter {
     override fun selectDates(dates: MutableList<Calendar>): Observable<ConfirmDates> {
         val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
         val tempListDaysThisMonth = mutableListOf<Calendar>()
+        var tempListOfSelectedDays = mutableListOf<Calendar>()
 
         if(dates.isEmpty()){
             selectedDates = mutableListOf(Calendar.getInstance())
@@ -49,7 +50,7 @@ class HomePresenter: HomeContract.Presenter {
             }
 
             if(tempListDaysThisMonth.isNotEmpty()){
-                daysThisMonthList = tempListDaysThisMonth.distinct() as MutableList<Calendar>
+                daysThisMonthList = tempListDaysThisMonth.distinct().toMutableList()
             }else{
                 daysThisMonthList = mutableListOf()
             }
@@ -58,7 +59,9 @@ class HomePresenter: HomeContract.Presenter {
 
         numOfDays = selectedDates.size
 
-        return Observable.fromCallable { ConfirmDates(selectedDates, DateUtils.getSelectedDaysNumber(selectedDates)) }
+        tempListOfSelectedDays = selectedDates.distinct().toMutableList()
+
+        return Observable.fromCallable { ConfirmDates(tempListOfSelectedDays, DateUtils.getSelectedDaysNumber(tempListOfSelectedDays)) }
     }
 
     override fun resetCalendar() {
@@ -169,7 +172,8 @@ class HomePresenter: HomeContract.Presenter {
             tempSelectedDays.addAll(formatDates(datesList))
         }
 
-        return tempSelectedDays.distinct() as MutableList<String>
+        return tempSelectedDays.distinct().toMutableList()
+
     }
 
     override fun resetDatesForNewMonth() {

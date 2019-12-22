@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/allMonths"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/all_months"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/january"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/allMonths"
+                android:layout_marginTop="10dp"
+                android:text="@string/january"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/januaryList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/january"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/january"/>
+
+            <TextView
+                android:id="@+id/february"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/januaryList"
+                android:layout_marginTop="10dp"
+                android:text="@string/february"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/februaryList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/february"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/february"/>
+
+            <TextView
+                android:id="@+id/march"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/februaryList"
+                android:layout_marginTop="10dp"
+                android:text="@string/march"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/marchList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/march"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/march"/>
+
+            <TextView
+                android:id="@+id/april"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/marchList"
+                android:layout_marginTop="10dp"
+                android:text="@string/april"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/aprilList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/april"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/april"/>
+
+            <TextView
+                android:id="@+id/may"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/aprilList"
+                android:layout_marginTop="10dp"
+                android:text="@string/may"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/mayList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/may"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/may"/>
+
+            <TextView
+                android:id="@+id/june"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mayList"
+                android:layout_marginTop="10dp"
+                android:text="@string/june"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/juneList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/june"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/june"/>
+
+            <TextView
+                android:id="@+id/july"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/juneList"
+                android:layout_marginTop="10dp"
+                android:text="@string/july"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/julyList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/july"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/july"/>
+
+            <TextView
+                android:id="@+id/august"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/julyList"
+                android:layout_marginTop="10dp"
+                android:text="@string/august"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/augustList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/august"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/august"/>
+
+            <TextView
+                android:id="@+id/september"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/augustList"
+                android:layout_marginTop="10dp"
+                android:text="@string/september"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/septemberList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/september"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/september"/>
+
+            <TextView
+                android:id="@+id/october"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/septemberList"
+                android:layout_marginTop="10dp"
+                android:text="@string/october"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/octoberList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/october"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/october"/>
+
+            <TextView
+                android:id="@+id/november"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/octoberList"
+                android:layout_marginTop="10dp"
+                android:text="@string/november"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/novemberList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/november"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/november"/>
+
+            <TextView
+                android:id="@+id/december"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/novemberList"
+                android:layout_marginTop="10dp"
+                android:text="@string/december"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/decemberList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/december"
+                android:text="@string/days_this_month"
+                android:textColor="#0B1B69"
+                android:layout_alignLeft="@id/december"/>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

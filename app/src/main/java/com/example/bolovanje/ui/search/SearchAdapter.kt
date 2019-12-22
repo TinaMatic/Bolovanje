@@ -10,7 +10,6 @@ import com.example.bolovanje.model.Employer
 import com.example.bolovanje.utils.DateUtils.Companion.convertDatesToCalendarObj
 import kotlinx.android.synthetic.main.employers_search_row.view.*
 import java.util.*
-import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class SearchAdapter (private val context: Context,
@@ -18,10 +17,6 @@ class SearchAdapter (private val context: Context,
                      val selectedDates: MutableList<Calendar>,
                      val onSearchItemClickListener: OnSearchItemClickListener):
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
-
-    @Inject
-    lateinit var presenter: SearchContract.Presenter
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.employers_search_row, parent, false)
@@ -46,8 +41,10 @@ class SearchAdapter (private val context: Context,
             itemView.txtDaysWithExcuse.text = employer.daysWithExcuseNum.toString()
             itemView.txtDaysWithoutExcuse.text = employer.daysWithoutExcuseNum.toString()
             itemView.txtDaysThisMonth.text = ""
+            itemView.txtDaysWithoutExcuseList.text = ""
 
             var listOfDaysThisMonth: String = ""
+            var listOfDaysWithoutExcuse = ""
 
             if(employer.daysThisMonthList.isNotEmpty()){
                 employer.daysThisMonthList.sorted().forEach {
@@ -58,16 +55,29 @@ class SearchAdapter (private val context: Context,
                 itemView.txtDaysThisMonth.text = context.getString(R.string.no_sick_leave)
             }
 
+            if(employer.daysWithoutExcuseList.isNotEmpty()){
+                employer.daysWithoutExcuseList.sorted().forEach {
+                    listOfDaysWithoutExcuse +=  "${it.substring(0,6)} "
+                }
+                itemView.txtDaysWithoutExcuseList.text = listOfDaysWithoutExcuse
+            }else{
+                itemView.txtDaysWithoutExcuseList.text = context.getString(R.string.no_days_without_excuse)
+            }
+
             itemView.btnRemove.setOnClickListener {
                 onSearchItemClickListener.onDeleteClick(position)
             }
 
             itemView.btnEdit.setOnClickListener {
-                onSearchItemClickListener.onEditClick(position, employer.firstName!!, employer.lastName!!, convertDatesToCalendarObj(employer.selectedDays))
+                onSearchItemClickListener.onEditClick(position, employer.firstName!!, employer.lastName!!, convertDatesToCalendarObj(employer.daysWithExcuseList))
             }
 
-            itemView.txtAddDaysWithExcuse.setOnClickListener{
-                onSearchItemClickListener.onAddDaysWithExcuseClick(position)
+            itemView.txtAddDaysWithoutExcuse.setOnClickListener{
+                onSearchItemClickListener.onUpdateDaysWithoutExcuseClick(position, convertDatesToCalendarObj(employer.daysWithoutExcuseList))
+            }
+
+            itemView.txtDaysWithExcuseShow.setOnClickListener {
+                onSearchItemClickListener.onShowClick(employer.daysWithExcuseList)
             }
 
         }

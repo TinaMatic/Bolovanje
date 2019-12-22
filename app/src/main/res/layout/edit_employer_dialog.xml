@@ -7,7 +7,7 @@
 
     <EditText
         android:id="@+id/etFirstName"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="55dp"
         android:layout_marginTop="32dp"
         android:ems="10"
@@ -20,7 +20,7 @@
 
     <EditText
         android:id="@+id/etLastName"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="55dp"
         android:layout_marginTop="24dp"
         android:ems="10"

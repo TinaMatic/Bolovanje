@@ -24,11 +24,11 @@ class HomeFragment : Fragment(), HomeContract.View {
     private var datePicker: DateDialog? = null
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var dates: MutableList<Calendar> = mutableListOf()
-    var previousDates : MutableList<Calendar> = mutableListOf(Calendar.getInstance())
+    private var previousDates : MutableList<Calendar> = mutableListOf()
     private lateinit var firstName: String
     private lateinit var lastName: String
     private var excuse: Boolean = false
-    val now = Calendar.getInstance()
+    private val now = Calendar.getInstance()
     val today: MutableList<Calendar> = mutableListOf(now)
 
     @Inject
@@ -40,7 +40,6 @@ class HomeFragment : Fragment(), HomeContract.View {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,7 +58,6 @@ class HomeFragment : Fragment(), HomeContract.View {
 
         compositeDisposable.add(btnSubmit.clicks().subscribe{
             readData()
-            (activity as MainActivity).enableBottomNaigation(true)
             resetData()
             btnSubmit.findNavController().navigate(R.id.action_navigation_home_self)
         })
@@ -78,20 +76,32 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
 
-    override fun showCalendar(date: MutableList<Calendar>) {
-        datePicker = DateDialog(activity!!,R.style.DialogTheme, date)
+    override fun showCalendar(calendarDates: MutableList<Calendar>) {
+        datePicker = DateDialog(activity!!,R.style.DialogTheme, calendarDates)
 
         //handle the cancel button
         compositeDisposable.add(datePicker!!.cancelObservable.subscribe {
             hideCalendar()
+            if(previousDates.isNotEmpty()){
+                dates = previousDates.distinct() as MutableList<Calendar>
+            }else{
+                dates = mutableListOf()
+            }
         })
 
         //handle the ok button
-        compositeDisposable.add(datePicker!!.confirmDateObservable.flatMap {presenter.selectDates(date)}.subscribe {
+        compositeDisposable.add(datePicker!!.confirmDateObservable.switchMap {presenter.selectDates(calendarDates)}.subscribe {
             hideCalendar()
             tvDate.text = it.dataLabel
-            previousDates = it.selectedDays!!
 
+            //reset the previous dates
+            previousDates.clear()
+
+            //save only the currently selected dates as previous dates
+            previousDates.addAll(it.selectedDays!!)
+
+            //reset the dates to all the selected days
+            dates = it.selectedDays
         })
 
         datePicker!!.show()
@@ -113,7 +123,6 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun readData() {
-        (activity as MainActivity).enableBottomNaigation(false)
         firstName = etFirstName.text.toString()
         lastName = etLastName.text.toString()
         excuse = cbExcuse.isChecked
@@ -122,7 +131,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun showSuccessfulMessage(){
-        Toast.makeText(activity, "${firstName} ${lastName}'s bolovanje has successfully been added", Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, "${firstName} ${lastName}'s sick leave days have successfully been added", Toast.LENGTH_LONG).show()
     }
 
     override fun showErrorMessage() {

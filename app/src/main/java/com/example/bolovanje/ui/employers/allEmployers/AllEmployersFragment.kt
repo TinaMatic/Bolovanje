@@ -44,13 +44,17 @@ class AllEmployersFragment : Fragment(), AllEmployersContract.View {
 
         clNoResults.findViewById<TextView>(R.id.tvNoResultText)
             .text = getString(R.string.employer_no_data_text)
-
     }
 
     override fun onResume() {
         super.onResume()
         presenter.resetDatesForNewMonth()
     }
+
+//    override fun onStart() {
+//        super.onStart()
+//        presenter.loadData()
+//    }
 
     override fun onAttach(context: Context) {
         (activity?.application as SickLeaveApplication).getSickLeaveComponent()

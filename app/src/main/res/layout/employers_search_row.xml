@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/employersCardView"
         android:layout_width="350dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,14 +37,14 @@
                 android:text="Employer's Name"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_marginStart="10dp"/>
+                android:layout_marginStart="5dp"/>
 
             <TextView
                 android:id="@+id/txtNumberOfDaysLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtEmployers"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@id/civEmployersProfile"
                 android:text="@string/number_of_days"
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtEmployers"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="25dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@id/txtNumberOfDaysLabel"
                 android:text="broj dana"
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtNumberOfDaysLabel"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@id/civEmployersProfile"
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtTenOrMoreDaysLabel"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@id/civEmployersProfile"
@@ -113,25 +113,26 @@
                 android:layout_marginBottom="5dp"/>
 
             <TextView
-                android:id="@+id/txtAddDaysWithExcuse"
+                android:id="@+id/txtDaysWithExcuseShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtTenOrMoreDays"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="2dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@id/txtDaysWithExcuse"
-                android:text="@string/add_days_with_excuse"
-                android:textColor="#0B1B69"
-                android:textSize="18sp"
+                android:layout_alignBottom="@id/txtDaysWithExcuseLabel"
+                android:text="@string/show_days_with_excuse"
                 android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
+                android:textColor="#0B1B69"
+                android:textSize="16sp" />
+
 
             <TextView
                 android:id="@+id/txtDaysWithoutExcuseLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtDaysWithExcuseLabel"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@id/civEmployersProfile"
@@ -152,11 +153,39 @@
                 android:layout_marginBottom="5dp"/>
 
             <TextView
-                android:id="@+id/txtDaysThisMonthLabel"
+                android:id="@+id/txtDaysWithoutExcuseList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtDaysWithoutExcuseLabel"
-                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/civEmployersProfile"
+                android:layout_alignLeft="@id/txtDaysWithoutExcuseLabel"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="list dana"
+                android:textColor="#0B1B69"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtAddDaysWithoutExcuse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDaysWithExcuse"
+                android:layout_alignLeft="@id/txtDaysWithExcuseShow"
+                android:layout_alignBottom="@id/txtDaysWithoutExcuse"
+                android:layout_marginTop="7dp"
+                android:layout_toRightOf="@id/txtDaysWithoutExcuse"
+                android:text="@string/update_days_with_excuse"
+                android:textColor="#0B1B69"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/txtDaysThisMonthLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDaysWithoutExcuseList"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@id/civEmployersProfile"

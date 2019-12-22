@@ -64,6 +64,7 @@ class SearchPresenter: SearchContract.Presenter {
     override fun selectDates(dates: MutableList<Calendar>): Observable<Pair<ConfirmDates, MutableList<Calendar>>> {
         val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
         val tempListDaysThisMonth = mutableListOf<Calendar>()
+        var tempListOfSelectedDays = mutableListOf<Calendar>()
 
         if(dates.isEmpty()){
             selectedDates = mutableListOf(Calendar.getInstance())
@@ -77,21 +78,22 @@ class SearchPresenter: SearchContract.Presenter {
             }
 
             if(tempListDaysThisMonth.size != 0){
-                datesThisMonthList = tempListDaysThisMonth.distinct() as MutableList<Calendar>
+                datesThisMonthList = tempListDaysThisMonth.distinct().toMutableList()
             }else{
                 datesThisMonthList = mutableListOf()
             }
-
         }
 
-        val selectedDatesObservable = Observable.fromCallable { ConfirmDates(selectedDates, DateUtils.getSelectedDaysNumber(selectedDates)) }
+        tempListOfSelectedDays = selectedDates.distinct().toMutableList()
+
+        val selectedDatesObservable = Observable.fromCallable { ConfirmDates(tempListOfSelectedDays, DateUtils.getSelectedDaysNumber(tempListOfSelectedDays)) }
         return selectedDatesObservable.map {
             Pair(it, datesThisMonthList)
         }
     }
 
-    override fun addDaysWithExcuse(position: Int): Observable<Employer> {
-        return FirebaseRepository.addDaysWithExcuse(listOfDatabseKeys[position], selectedDates, datesThisMonthList)
+    override fun updateDaysWithoutExcuse(position: Int): Observable<Employer> {
+        return FirebaseRepository.updateDaysWithoutExcuse(listOfDatabseKeys[position], selectedDates, datesThisMonthList)
     }
 
     override fun deleteEmployer(position: Int): Observable<Boolean> {
@@ -104,5 +106,24 @@ class SearchPresenter: SearchContract.Presenter {
 
     override fun resetDatesForNewMonth() {
         FirebaseRepository.resetDatesForNewMonth()
+    }
+
+    override fun getSelectedDaysForEmployer(position: Int): Observable<MutableList<Calendar>> {
+        return FirebaseRepository.getSelectedDaysForEmployer(listOfDatabseKeys[position])
+    }
+
+    override fun findMonthDates(month: String, selectedDays: MutableList<String>): String {
+        var listOfDatesInMonth = ""
+        selectedDays.sorted().forEach {date->
+            if(date.substring(3,5).equals(month)){
+                listOfDatesInMonth += "${date.substring(0,6)} "
+            }
+        }
+
+        if(listOfDatesInMonth.equals("")){
+            listOfDatesInMonth = "No selected dates for this month"
+        }
+
+        return listOfDatesInMonth
     }
 }
