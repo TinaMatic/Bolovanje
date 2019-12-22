@@ -1,5 +1,6 @@
 package com.example.bolovanje.model
 
+import com.example.bolovanje.utils.DateUtils.Companion.convertDatesToCalendarObj
 import com.example.bolovanje.utils.DateUtils.Companion.formatDates
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
@@ -209,23 +210,40 @@ object FirebaseRepository {
         return Observable.create<Pair<Boolean, Employer>> {emitter->
             readDataForOneEmployer(key).subscribe {
 
-                var newListOfDaysThisMonth = mutableListOf<Calendar>()
+                var newListOfDaysThisMonth = mutableListOf<String>()
+                val newAllSelectedDays = mutableListOf<String>()
                 val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
 
+                //add all the selected days to this month list if they belong there
                 if(selectedDays.isEmpty()){
-                    newListOfDaysThisMonth = mutableListOf(Calendar.getInstance())
+                    newListOfDaysThisMonth = formatDates(mutableListOf(Calendar.getInstance()))
                 }else{
+                    val tempListOfDaysThisMonth = mutableListOf<Calendar>()
                     selectedDays.forEach {
                         if(it.get(Calendar.MONTH).equals(thisMonth)){
+                            tempListOfDaysThisMonth.add(it)
+                        }
+                    }
+                    newListOfDaysThisMonth.addAll(formatDates(tempListOfDaysThisMonth))
+                }
+
+                //add all the days without excuse to days this month if they belong there
+                if(it.daysWithoutExcuseList.isNotEmpty()){
+                    it.daysWithoutExcuseList.forEach {
+                        if(it.substring(3, 5).equals((thisMonth + 1).toString())){
                             newListOfDaysThisMonth.add(it)
                         }
                     }
                 }
 
+                newAllSelectedDays.addAll(formatDates(selectedDays))
+                newAllSelectedDays.addAll(it.daysWithoutExcuseList)
+
                 val employer = Employer(firstName, lastName, false,
-                    formatDates(selectedDays), formatDates(selectedDays).size,
-                    formatDates(newListOfDaysThisMonth), formatDates(newListOfDaysThisMonth).size,
-                    it.daysWithExcuseList, it.daysWithExcuseNum, it.daysWithoutExcuseList, it.daysWithoutExcuseNum)
+                    newAllSelectedDays.distinct().toMutableList(), newAllSelectedDays.distinct().size,
+                    newListOfDaysThisMonth.distinct().toMutableList(), newListOfDaysThisMonth.distinct().size,
+                    formatDates(selectedDays).distinct().toMutableList(), formatDates(selectedDays).distinct().size,
+                    it.daysWithoutExcuseList, it.daysWithoutExcuseList.size)
 
                 mFirebaseDatabaseRef.child("Employer").child(key)
                     .setValue(employer).addOnCompleteListener {task: Task<Void> ->
@@ -239,32 +257,35 @@ object FirebaseRepository {
          }
     }
 
-    fun addDaysWithExcuse(key: String, selectedDays: MutableList<Calendar>, datesThisMonthList: MutableList<Calendar>): Observable<Employer>{
+    fun updateDaysWithoutExcuse(key: String, selectedDays: MutableList<Calendar>, datesThisMonthList: MutableList<Calendar>): Observable<Employer>{
 
         return Observable.create<Employer> {emitter ->
             var employerObj :Employer
 
             readDataForOneEmployer(key).subscribe {employer->
-                employer.daysWithExcuseList.addAll(formatDates(selectedDays))
-                employer.selectedDays.addAll(formatDates(selectedDays))
-                employer.daysThisMonthList.addAll(formatDates(datesThisMonthList))
+                val thisMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
 
-                mFirebaseDatabaseRef.child("Employer").child(key).child("daysWithExcuseList").setValue(employer.daysWithExcuseList.distinct())
-                mFirebaseDatabaseRef.child("Employer").child(key).child("daysWithExcuseNum").setValue(employer.daysWithExcuseList.distinct().size)
+                val newDaysWithoutExcuseList = formatDates(selectedDays)
 
-                mFirebaseDatabaseRef.child("Employer").child(key).child("selectedDays").setValue(employer.selectedDays.distinct())
-                mFirebaseDatabaseRef.child("Employer").child(key).child("numOfDays").setValue(employer.selectedDays.distinct().size)
+                val newSelectedDaysList = mutableListOf<String>()
+                newSelectedDaysList.addAll(employer.daysWithExcuseList)
+                newSelectedDaysList.addAll(formatDates(selectedDays))
 
-                mFirebaseDatabaseRef.child("Employer").child(key).child("daysThisMonthList").setValue(employer.daysThisMonthList.distinct())
-                mFirebaseDatabaseRef.child("Employer").child(key).child("daysThisMonthNum").setValue(employer.daysThisMonthList.distinct().size)
-
+                val newDaysThisMonthList = mutableListOf<String>()
+                newSelectedDaysList.forEach {selectedDay->
+                    if(selectedDay.substring(3, 5).equals(thisMonth.toString())){
+                        newDaysThisMonthList.add(selectedDay)
+                    }
+                }
                 employerObj = Employer(employer.firstName, employer.lastName, true,
-                    employer.selectedDays, employer.selectedDays.distinct().size,
-                    employer.daysThisMonthList.distinct() as MutableList<String>, employer.daysThisMonthList.distinct().size,
-                    employer.daysWithExcuseList.distinct() as MutableList<String>, employer.daysWithExcuseList.distinct().size,
-                    employer.daysWithoutExcuseList, employer.daysWithoutExcuseNum)
+                    newSelectedDaysList.distinct().toMutableList(), newSelectedDaysList.distinct().size,
+                    newDaysThisMonthList.distinct().toMutableList(), newDaysThisMonthList.distinct().size,
+                    employer.daysWithExcuseList, employer.daysWithExcuseNum,
+                    newDaysWithoutExcuseList.distinct().toMutableList(), newDaysWithoutExcuseList.distinct().size)
 
-                    emitter.onNext(employerObj)
+                mFirebaseDatabaseRef.child("Employer").child(key).setValue(employerObj)
+
+                emitter.onNext(employerObj)
             }
         }
     }
@@ -301,6 +322,19 @@ object FirebaseRepository {
                 count += 1
             }
         })
+    }
+
+    fun getSelectedDaysForEmployer(key: String): Observable<MutableList<Calendar>>{
+
+        return Observable.create {emitter ->
+            val tempListOfSelectedDaysWithExcuse = mutableListOf<Calendar>()
+            readDataForOneEmployer(key).subscribe {
+                convertDatesToCalendarObj(it.daysWithExcuseList).forEach {
+                    tempListOfSelectedDaysWithExcuse.add(it)
+                }
+                emitter.onNext(tempListOfSelectedDaysWithExcuse)
+            }
+        }
     }
 }
 

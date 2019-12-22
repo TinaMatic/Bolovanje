@@ -25,7 +25,7 @@ import java.util.*
 
 
 
-class DateDialog (context: Context, theme: Int, private val selectedDays: MutableList<Calendar>): AppCompatDialog(context, theme) {
+class DateDialog (context: Context, theme: Int, private var selectedDays: MutableList<Calendar>): AppCompatDialog(context, theme) {
 
     lateinit var confirmDateObservable: Observable<MutableList<Calendar>>
     lateinit var cancelObservable: Observable<Unit>
@@ -72,7 +72,7 @@ class DateDialog (context: Context, theme: Int, private val selectedDays: Mutabl
 
         //handle ok button click
         confirmDateObservable = rootView.btnSet.clicks()
-            .switchMap {Observable.fromCallable { selectedDays } }
+            .switchMap {Observable.fromCallable { selectedDays }}
     }
 
     private fun initDialog(rootView: View, days: MutableList<Calendar>){

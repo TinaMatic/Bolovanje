@@ -18,8 +18,8 @@
     <string name="btn_OK">OK</string>
 
     <!--    AllEmployers Page-->
-    <string name="number_of_days">Total number of days:</string>
-    <string name="ten_or_more_days">Days this month</string>
+    <string name="number_of_days">Total num of days:</string>
+    <string name="ten_or_more_days">Days this month:</string>
     <string name="days_with_excuse">Days with excuse:</string>
     <string name="employer_no_data_header">No results</string>
     <string name="employer_no_data_text">There aren\'t any employers</string>
@@ -33,9 +33,25 @@
     <string name="btn_Search">Search</string>
     <string name="days_this_month">List of days this month:</string>
     <string name="search_employer_no_result">There aren\'t any employers with that name</string>
-    <string name="add_days_with_excuse">Add</string>
+    <string name="update_days_with_excuse">Edit</string>
     <string name="no_sick_leave">There are no sick leaves in this month</string>
+    <string name="no_days_without_excuse">There are no days without excuse</string>
     <string name="days_without_excuse">Days without excuse:</string>
+    <string name="show_days_with_excuse">Show</string>
+
+    <string name="all_months">All Months:</string>
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
 
     <!--    Splash Page-->
     <string name="splash_screen_text">Sick Leave Application</string>

@@ -1,6 +1,7 @@
 package com.example.bolovanje.ui.main
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -33,14 +34,15 @@ class MainActivity : AppCompatActivity(){
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigation.setupWithNavController(navController)
 
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 
 
-    fun enableBottomNaigation(enabled: Boolean){
-        for (i in 0 until bottomNavigation.menu.size()){
-            bottomNavigation.menu.getItem(i).isEnabled = enabled
-        }
-    }
+//    fun enableBottomNaigation(enabled: Boolean){
+//        for (i in 0 until bottomNavigation.menu.size()){
+//            bottomNavigation.menu.getItem(i).isEnabled = enabled
+//        }
+//    }
 
 
 }

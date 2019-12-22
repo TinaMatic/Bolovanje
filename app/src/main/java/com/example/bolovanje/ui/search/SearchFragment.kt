@@ -8,7 +8,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bolovanje.SickLeaveApplication
 import com.example.bolovanje.R
 import com.example.bolovanje.model.Employer
-import com.example.bolovanje.model.FirebaseRepository
 import com.example.bolovanje.view.DateDialog
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,6 +22,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.edit_employer_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.show_all_dates_dialog.view.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -34,10 +33,14 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
     private var adapter: SearchAdapter? = null
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var datePicker: DateDialog? = null
-    private var dates: MutableList<Calendar> = mutableListOf(Calendar.getInstance())
-    var selectedDatesForDaysWithExcuse = mutableListOf<Calendar>(Calendar.getInstance())
-    var selectedDatesForUpdateEmploter = mutableListOf<Calendar>()
-    var datesThisMonthList = mutableListOf<Calendar>(Calendar.getInstance())
+
+    private var selectedDatesForDaysWithExcuse = mutableListOf<Calendar>(Calendar.getInstance())
+    private var selectedDatesForUpdateEmployer = mutableListOf<Calendar>()
+    private var datesThisMonthList = mutableListOf<Calendar>(Calendar.getInstance())
+
+    private var isCanceled = false
+    private var showDatesForUpdate = mutableListOf<Calendar>()
+    private val previousDates = mutableListOf<Calendar>()
 
     @Inject
     lateinit var presenter: SearchContract.Presenter
@@ -171,17 +174,6 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
         }.debounce (1000, TimeUnit.MILLISECONDS)
     }
 
-
-    fun showKeyboard(){
-        val inputMethodManager = view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(etEmployerName, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    fun hideKeyboar(){
-        val inputMethodManager = view?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(etEmployerName.windowToken, 0)
-    }
-
     private fun showDeleteDialog(position: Int){
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Delete")
@@ -218,32 +210,88 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
                 firstNameValue = view.etFirstName.text.toString()
                 lastNameValue = view.etLastName.text.toString()
 
-                presenter.editEmployer(position, firstNameValue!!, lastNameValue!!, selectedDatesForUpdateEmploter).subscribe {
-                    if(it.first){
-                        Toast.makeText(context, "Employer has been successfully updated", Toast.LENGTH_LONG).show()
-                        adapter?.employerList!![position] = it.second
-                        adapter?.notifyItemChanged(position)
-                    }else{
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                if (selectedDatesForUpdateEmployer.isNotEmpty()){
+                    presenter.editEmployer(position, firstNameValue!!, lastNameValue!!, selectedDatesForUpdateEmployer).subscribe {
+                        if(it.first){
+                            Toast.makeText(context, "Employer has been successfully updated", Toast.LENGTH_LONG).show()
+                            adapter?.employerList!![position] = it.second
+                            adapter?.notifyItemChanged(position)
+                        }else{
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }else{
+                    presenter.editEmployer(position, firstNameValue!!, lastNameValue!!, selectedDays).subscribe {
+                        if(it.first){
+                            Toast.makeText(context, "Employer has been successfully updated", Toast.LENGTH_LONG).show()
+                            adapter?.employerList!![position] = it.second
+                            adapter?.notifyItemChanged(position)
+                        }else{
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
+
             }.setNegativeButton("Cancel"){dialog, id ->
 
             }
 
-        var alert = builder.create()
+        val alert = builder.create()
         alert.setView(view)
         alert.show()
 
         view.etFirstName.setText(firstName)
         view.etLastName.setText(lastName)
         view.ivCalendar.setOnClickListener {
-            showCalendarForUpdatingEmployer(selectedDays, position)
+            if(isCanceled){
+
+                presenter.getSelectedDaysForEmployer(position).subscribe {
+                    if(previousDates.isNotEmpty()){
+                        showDatesForUpdate = previousDates.distinct().toMutableList()
+                    }else{
+                        showDatesForUpdate = it
+                    }
+                    showCalendarForUpdatingEmployer(showDatesForUpdate, position)
+                }
+
+            }else{
+                if(selectedDatesForUpdateEmployer.isEmpty()){
+                    showDatesForUpdate = selectedDays
+                }else{
+                    showDatesForUpdate = selectedDatesForUpdateEmployer
+                }
+                showCalendarForUpdatingEmployer(showDatesForUpdate, position)
+            }
         }
     }
 
-    override fun showCalendarForAddingDatesWithExcuse(date: MutableList<Calendar>, position: Int) {
-        datePicker = DateDialog(activity!!, R.style.DialogTheme, date)
+    private fun showAllDatesDialogBox(selectedDays: MutableList<String>){
+        val view = LayoutInflater.from(context).inflate(R.layout.show_all_dates_dialog, null)
+
+        val builder = AlertDialog.Builder(context)
+        builder.setNeutralButton("OK", null)
+
+        val alert = builder.create()
+        alert.setView(view)
+        alert.show()
+
+        view.januaryList.text   = presenter.findMonthDates("01", selectedDays)
+        view.februaryList.text  = presenter.findMonthDates("02", selectedDays)
+        view.marchList.text     = presenter.findMonthDates("03", selectedDays)
+        view.aprilList.text     = presenter.findMonthDates("04", selectedDays)
+        view.mayList.text       = presenter.findMonthDates("05", selectedDays)
+        view.juneList.text      = presenter.findMonthDates("06", selectedDays)
+        view.julyList.text      = presenter.findMonthDates("07", selectedDays)
+        view.augustList.text    = presenter.findMonthDates("08", selectedDays)
+        view.septemberList.text = presenter.findMonthDates("09", selectedDays)
+        view.octoberList.text   = presenter.findMonthDates("10", selectedDays)
+        view.novemberList.text  = presenter.findMonthDates("11", selectedDays)
+        view.decemberList.text  = presenter.findMonthDates("12", selectedDays)
+
+    }
+
+    override fun showCalendarForUpdatingDatesWithothExcuse(calendarDates: MutableList<Calendar>, position: Int) {
+        datePicker = DateDialog(activity!!, R.style.DialogTheme, calendarDates)
 
         //handle the cancel button
         compositeDisposable.add(datePicker!!.cancelObservable.subscribe {
@@ -251,37 +299,37 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
         })
 
         //handle the ok button
-        compositeDisposable.add(datePicker!!.confirmDateObservable.switchMap {presenter.selectDates(date)}.subscribe {
+        compositeDisposable.add(datePicker!!.confirmDateObservable.switchMap {presenter.selectDates(calendarDates)}.subscribe {
             selectedDatesForDaysWithExcuse = it.first.selectedDays!!
             datesThisMonthList = it.second
             hideCalendar()
 
-            val updatedEmployer = presenter.addDaysWithExcuse(position)
+            val updatedEmployer = presenter.updateDaysWithoutExcuse(position)
             updatedEmployer.subscribe {
                 adapter?.employerList!![position] = it
                 adapter?.notifyItemChanged(position)
-
-                dates = mutableListOf()
             }
         })
 
         datePicker!!.show()
-
     }
 
-    override fun showCalendarForUpdatingEmployer(dates: MutableList<Calendar>, position: Int) {
-        datePicker = DateDialog(activity!!, R.style.DialogTheme, dates)
+    override fun showCalendarForUpdatingEmployer(calendarDates: MutableList<Calendar>, position: Int) {
+        datePicker = DateDialog(activity!!, R.style.DialogTheme, calendarDates)
 
         //handle the cancel button
         compositeDisposable.add(datePicker!!.cancelObservable.subscribe {
             hideCalendar()
+            isCanceled = true
         })
 
         //handle the ok button
-        compositeDisposable.add(datePicker!!.confirmDateObservable.switchMap {presenter.selectDates(dates)}.subscribe {
-            selectedDatesForUpdateEmploter = it.first.selectedDays!!
+        compositeDisposable.add(datePicker!!.confirmDateObservable.switchMap {presenter.selectDates(calendarDates)}.subscribe {
+            selectedDatesForUpdateEmployer = it.first.selectedDays!!
             hideCalendar()
-
+            previousDates.clear()
+            previousDates.addAll(it.first.selectedDays!!)
+            isCanceled = false
         })
 
         datePicker!!.show()
@@ -301,7 +349,11 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
         showEditDialog(position, firstName, lastName, selectedDays)
     }
 
-    override fun onAddDaysWithExcuseClick(position: Int) {
-        showCalendarForAddingDatesWithExcuse(dates, position)
+    override fun onUpdateDaysWithoutExcuseClick(position: Int, daysWithoutExcuse: MutableList<Calendar>) {
+        showCalendarForUpdatingDatesWithothExcuse(daysWithoutExcuse, position)
+    }
+
+    override fun onShowClick(selectedDays: MutableList<String>) {
+        showAllDatesDialogBox(selectedDays)
     }
 }
