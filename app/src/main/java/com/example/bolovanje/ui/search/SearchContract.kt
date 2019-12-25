@@ -16,7 +16,7 @@ class SearchContract {
         fun deleteEmployer(position: Int): Observable<Boolean>
         fun editEmployer(position: Int, firstName: String, lastName: String, selectedDays: MutableList<Calendar>): Observable<Pair<Boolean, Employer>>
         fun resetDatesForNewMonth()
-        fun getSelectedDaysForEmployer(position: Int): Observable<MutableList<Calendar>>
+        fun getSelectedDaysWithExcuseForEmployer(position: Int): Observable<MutableList<Calendar>>
         fun findMonthDates(month: String, selectedDays: MutableList<String>): String
     }
 

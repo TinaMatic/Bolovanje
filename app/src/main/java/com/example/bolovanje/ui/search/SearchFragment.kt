@@ -128,7 +128,7 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
             if(context != null){
                 adapter = SearchAdapter(context!!, ArrayList(list), selectedDatesForDaysWithExcuse, this)
                 recyclerViewSearch?.layoutManager = LinearLayoutManager(context)
-                recyclerViewSearch?.setHasFixedSize(true)
+//                recyclerViewSearch?.setHasFixedSize(true)
                 recyclerViewSearch?.adapter = adapter
             }
 
@@ -245,7 +245,7 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
         view.ivCalendar.setOnClickListener {
             if(isCanceled){
 
-                presenter.getSelectedDaysForEmployer(position).subscribe {
+                presenter.getSelectedDaysWithExcuseForEmployer(position).subscribe {
                     if(previousDates.isNotEmpty()){
                         showDatesForUpdate = previousDates.distinct().toMutableList()
                     }else{
@@ -253,7 +253,6 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
                     }
                     showCalendarForUpdatingEmployer(showDatesForUpdate, position)
                 }
-
             }else{
                 if(selectedDatesForUpdateEmployer.isEmpty()){
                     showDatesForUpdate = selectedDays

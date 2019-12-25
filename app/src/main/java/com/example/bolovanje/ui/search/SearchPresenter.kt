@@ -108,8 +108,8 @@ class SearchPresenter: SearchContract.Presenter {
         FirebaseRepository.resetDatesForNewMonth()
     }
 
-    override fun getSelectedDaysForEmployer(position: Int): Observable<MutableList<Calendar>> {
-        return FirebaseRepository.getSelectedDaysForEmployer(listOfDatabseKeys[position])
+    override fun getSelectedDaysWithExcuseForEmployer(position: Int): Observable<MutableList<Calendar>> {
+        return FirebaseRepository.getSelectedDaysWithExcuseForEmployer(listOfDatabseKeys[position])
     }
 
     override fun findMonthDates(month: String, selectedDays: MutableList<String>): String {

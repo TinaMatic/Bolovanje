@@ -180,6 +180,10 @@ class HomePresenter: HomeContract.Presenter {
         FirebaseRepository.resetDatesForNewMonth()
     }
 
+    override fun resetAllData(): Observable<Boolean> {
+        return FirebaseRepository.resetAllData()
+    }
+
     override fun attach(view: HomeContract.View) {
         this.view = view
     }

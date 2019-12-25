@@ -56,6 +56,6 @@
     <!--    Splash Page-->
     <string name="splash_screen_text">Sick Leave Application</string>
 
-
-
+    <!--    main menu-->
+    <string name="main_menu_reset">Reset</string>
 </resources>

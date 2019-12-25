@@ -13,6 +13,7 @@ class HomeContract {
         fun selectDates(dates: MutableList<Calendar>) : Observable<ConfirmDates>
         fun resetCalendar()
         fun resetDatesForNewMonth()
+        fun resetAllData(): Observable<Boolean>
     }
 
     interface View {

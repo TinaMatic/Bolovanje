@@ -2,9 +2,7 @@ package com.example.bolovanje.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -59,7 +57,6 @@ class HomeFragment : Fragment(), HomeContract.View {
         compositeDisposable.add(btnSubmit.clicks().subscribe{
             readData()
             resetData()
-            btnSubmit.findNavController().navigate(R.id.action_navigation_home_self)
         })
 
     }
@@ -75,6 +72,33 @@ class HomeFragment : Fragment(), HomeContract.View {
         super.onAttach(context)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.main_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+
+         when(item.itemId){
+            R.id.reset-> {
+                presenter.resetAllData().subscribe {
+                    if(it){
+                        Toast.makeText(context, "All data has been successfully deleted", Toast.LENGTH_LONG).show()
+                    }else{
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+        return true
+    }
 
     override fun showCalendar(calendarDates: MutableList<Calendar>) {
         datePicker = DateDialog(activity!!,R.style.DialogTheme, calendarDates)
@@ -132,6 +156,7 @@ class HomeFragment : Fragment(), HomeContract.View {
 
     override fun showSuccessfulMessage(){
         Toast.makeText(activity, "${firstName} ${lastName}'s sick leave days have successfully been added", Toast.LENGTH_LONG).show()
+        btnSubmit.findNavController().navigate(R.id.action_navigation_home_self)
     }
 
     override fun showErrorMessage() {
@@ -140,6 +165,7 @@ class HomeFragment : Fragment(), HomeContract.View {
 
     override fun showSuccessfulUpdateMessage() {
         Toast.makeText(activity, "${firstName} ${lastName} has been successfully updated", Toast.LENGTH_LONG).show()
+        btnSubmit.findNavController().navigate(R.id.action_navigation_home_self)
     }
 
     private fun resetData(){

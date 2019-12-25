@@ -324,7 +324,7 @@ object FirebaseRepository {
         })
     }
 
-    fun getSelectedDaysForEmployer(key: String): Observable<MutableList<Calendar>>{
+    fun getSelectedDaysWithExcuseForEmployer(key: String): Observable<MutableList<Calendar>>{
 
         return Observable.create {emitter ->
             val tempListOfSelectedDaysWithExcuse = mutableListOf<Calendar>()
@@ -333,6 +333,18 @@ object FirebaseRepository {
                     tempListOfSelectedDaysWithExcuse.add(it)
                 }
                 emitter.onNext(tempListOfSelectedDaysWithExcuse)
+            }
+        }
+    }
+
+    fun resetAllData(): Observable<Boolean>{
+        return Observable.create<Boolean> {emitter ->
+            mFirebaseDatabaseRef.child("Employer").removeValue().addOnCompleteListener {task: Task<Void> ->
+                if(task.isSuccessful){
+                    emitter.onNext(true)
+                }else{
+                    emitter.onNext(false)
+                }
             }
         }
     }
