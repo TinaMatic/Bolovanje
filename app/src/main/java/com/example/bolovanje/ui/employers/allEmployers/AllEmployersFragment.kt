@@ -3,6 +3,7 @@ package com.example.bolovanje.ui.employers.allEmployers
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -49,12 +50,8 @@ class AllEmployersFragment : Fragment(), AllEmployersContract.View {
     override fun onResume() {
         super.onResume()
         presenter.resetDatesForNewMonth()
+        presenter.loadData()
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//        presenter.loadData()
-//    }
 
     override fun onAttach(context: Context) {
         (activity?.application as SickLeaveApplication).getSickLeaveComponent()

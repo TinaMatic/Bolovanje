@@ -17,32 +17,35 @@ class AllEmployersPresenter : AllEmployersContract.Presenter {
 
     override fun loadData() {
 
-       compositeDisposable.add(FirebaseRepository.readAllData()
-           .subscribeOn(Schedulers.io())
-           .map {
-               if (it.first.isNotEmpty()){
-                   Pair(it.first as ArrayList<Employer>, it.second as ArrayList<String>)
-               }else{
-                   Pair(arrayListOf(), arrayListOf())
-               }}
-           .observeOn(AndroidSchedulers.mainThread())
-           .subscribe (
-            {
-               if(it.first.isNotEmpty()){
-                   it.first.sortByDescending {
-                       it.numOfDays
-                   }
-                   view.showProgressBar(false)
-                   view.showData(it.first)
-               }else{
-                   view.showProgressBar(false)
-                   view.showData(it.first)
-               }
+        compositeDisposable.add(
+            FirebaseRepository.readAllData()
+            .subscribeOn(Schedulers.io())
+            .map {
+                if (it.first.isNotEmpty()) {
+                    Pair(it.first as ArrayList<Employer>, it.second as ArrayList<String>)
+                } else {
+                    Pair(arrayListOf(), arrayListOf())
+                }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    if (it.first.isNotEmpty()) {
+                        it.first.sortByDescending {
+                            it.numOfDays
+                        }
+                        view.showProgressBar(false)
+                        view.showData(it.first)
+                    } else {
+                        view.showProgressBar(false)
+                        view.showData(it.first)
+                    }
 
-           },{error->
-               view.showErrorMessage(error.toString())
-               view.showProgressBar(true)
-           }))
+                }, { error ->
+                    view.showErrorMessage(error.toString())
+                    view.showProgressBar(true)
+                })
+        )
     }
 
     override fun resetDatesForNewMonth() {
