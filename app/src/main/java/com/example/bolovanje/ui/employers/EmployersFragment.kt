@@ -30,7 +30,6 @@ class EmployersFragment : Fragment() {
         viewPagerId.adapter = pagerAdapter
 
         mainTabs.setupWithViewPager(viewPagerId)
-        mainTabs.setTabTextColors(Color.WHITE, Color.BLUE)
+        mainTabs.setTabTextColors(Color.WHITE, Color.rgb(143,186,255))
     }
-
 }

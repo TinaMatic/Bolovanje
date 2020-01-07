@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/employersCardView"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civEmployersProfile"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/profile_img"/>
+
+            <TextView
+                android:id="@+id/txtEmployers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/civEmployersProfile"
+                android:layout_toEndOf="@id/civEmployersProfile"
+                android:text="Employer's Name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"/>
+
+            <TextView
+                android:id="@+id/txtNumberOfDaysLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtEmployers"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/civEmployersProfile"
+                android:text="@string/number_of_days"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtNumberOfDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtEmployers"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/txtNumberOfDaysLabel"
+                android:text="broj dana"
+                android:textColor="#0B1B69"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtTenOrMoreDaysLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtNumberOfDaysLabel"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@id/civEmployersProfile"
+                android:text="@string/ten_or_more_days"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtTenOrMoreDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtNumberOfDays"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_alignLeft="@id/txtNumberOfDays"
+                android:layout_toRightOf="@id/txtTenOrMoreDaysLabel"
+                android:text="broj dana"
+                android:textColor="#0B1B69"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDaysWithExcuseLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtTenOrMoreDaysLabel"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@id/civEmployersProfile"
+                android:text="@string/days_with_excuse"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDaysWithExcuse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtTenOrMoreDays"
+                android:layout_marginTop="5dp"
+                android:layout_alignLeft="@id/txtTenOrMoreDays"
+                android:layout_toRightOf="@id/txtDaysWithExcuseLabel"
+                android:text="broj dana"
+                android:textColor="#0B1B69"
+                android:textSize="18sp"
+                android:layout_marginBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/txtDaysWithExcuseShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtTenOrMoreDays"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@id/txtDaysWithExcuse"
+                android:layout_alignBottom="@id/txtDaysWithExcuseLabel"
+                android:text="@string/show_days_with_excuse"
+                android:textStyle="bold"
+                android:textColor="#0B1B69"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/txtDaysWithoutExcuseLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDaysWithExcuseLabel"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@id/civEmployersProfile"
+                android:text="@string/days_without_excuse"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDaysWithoutExcuse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDaysWithExcuse"
+                android:layout_marginTop="5dp"
+                android:layout_alignLeft="@id/txtTenOrMoreDays"
+                android:layout_toRightOf="@id/txtDaysWithExcuseLabel"
+                android:text="broj dana"
+                android:textColor="#0B1B69"
+                android:textSize="18sp"
+                android:layout_marginBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/txtDaysWithoutExcuseList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDaysWithoutExcuseLabel"
+                android:layout_toRightOf="@id/civEmployersProfile"
+                android:layout_alignLeft="@id/txtDaysWithoutExcuseLabel"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="list dana"
+                android:textColor="#0B1B69"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtAddDaysWithoutExcuse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDaysWithExcuse"
+                android:layout_alignLeft="@id/txtDaysWithExcuseShow"
+                android:layout_alignBottom="@id/txtDaysWithoutExcuse"
+                android:layout_marginTop="7dp"
+                android:layout_toRightOf="@id/txtDaysWithoutExcuse"
+                android:text="@string/update_days_with_excuse"
+                android:textColor="#0B1B69"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/txtDaysThisMonthLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDaysWithoutExcuseList"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@id/civEmployersProfile"
+                android:text="@string/days_this_month"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDaysThisMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDaysThisMonthLabel"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/civEmployersProfile"
+                android:layout_alignLeft="@id/txtDaysThisMonthLabel"
+                android:text="lista dana"
+                android:textColor="#0B1B69"
+                android:textSize="18sp"
+                android:layout_marginBottom="5dp"/>
+
+
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/civEmployersProfile"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:drawable/ic_menu_edit" />
+
+            <ImageButton
+                android:id="@+id/btnRemove"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/btnEdit"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:drawable/ic_menu_delete" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

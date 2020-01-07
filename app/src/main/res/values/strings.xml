@@ -1,16 +1,61 @@
 <resources>
-    <string name="app_name">Bolovanje</string>
+    <string name="app_name">Sick Leave</string>
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
     <string name="title_employers">Employers</string>
+
+    <!--    Home Screen-->
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-    <string name="doctors_excuse">Doznaka</string>
+    <string name="doctors_excuse">Excuse</string>
     <string name="submit">Submit</string>
-    <string name="number_of_days">Ukupan broj dana:</string>
+    <string name="home_title">Home</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--    Calendar-->
+    <string name="btn_none">None</string>
+    <string name="btn_business">Business Days</string>
+    <string name="btn_Cancel">Cancel</string>
+    <string name="btn_OK">OK</string>
+
+    <!--    AllEmployers Page-->
+    <string name="number_of_days">Total num of days:</string>
+    <string name="ten_or_more_days">Days this month:</string>
+    <string name="days_with_excuse">Days with excuse:</string>
+    <string name="employer_no_data_header">No results</string>
+    <string name="employer_no_data_text">There aren\'t any employers</string>
+    <string name="employers_title">Employers</string>
+
+    <!-- Ten Or More Days Employer Page-->
+    <string name="ten_or_more_employers_no_data_text">There aren\'t any employers that have more then 10 days used</string>
+
+    <!--    Search Page-->
     <string name="employer_name">Enter Employer Name</string>
-    <string name="ten_or_more_days">Ovaj mesec</string>
+    <string name="btn_Search">Search</string>
+    <string name="days_this_month">List of days this month:</string>
+    <string name="search_employer_no_result">There aren\'t any employers with that name</string>
+    <string name="update_days_with_excuse">Edit</string>
+    <string name="no_sick_leave">There are no sick leaves in this month</string>
+    <string name="no_days_without_excuse">There are no days without excuse</string>
+    <string name="days_without_excuse">Days without excuse:</string>
+    <string name="show_days_with_excuse">Show</string>
+
+    <string name="all_months">All Months:</string>
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+
+    <!--    Splash Page-->
+    <string name="splash_screen_text">Sick Leave Application</string>
+
+    <!--    main menu-->
+    <string name="main_menu_reset">Reset</string>
 </resources>
