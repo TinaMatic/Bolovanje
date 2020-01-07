@@ -8,7 +8,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class TenOrMoreDaysEmployersPresenter: TenOrMoreDaysEmployersContract.Presenter {
+class TenOrMoreDaysEmployersPresenter : TenOrMoreDaysEmployersContract.Presenter {
 
     private lateinit var view: TenOrMoreDaysEmployersContract.View
     private var compositeDisposable = CompositeDisposable()
@@ -24,23 +24,24 @@ class TenOrMoreDaysEmployersPresenter: TenOrMoreDaysEmployersContract.Presenter 
                 filterNumOfDays(it.first)
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe (
-                {listOfEmployer->
-                    if(listOfEmployer.isNotEmpty()){
+            .subscribe(
+                { listOfEmployer ->
+                    if (listOfEmployer.isNotEmpty()) {
                         val tempList = listOfEmployer.sortedByDescending {
                             it.numOfDays
                         }
                         view.showProgressBar(false)
                         view.showData(tempList)
-                    }else{
+                    } else {
                         view.showProgressBar(false)
                         view.showData(emptyList())
                     }
 
-                },{error->
+                }, { error ->
                     view.showErrorMessage()
                     view.showProgressBar(true)
-                }))
+                })
+        )
     }
 
     override fun resetDatesForNewMonth() {

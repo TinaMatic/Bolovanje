@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "72007856879-dqriovtaqrmp1srkkj5gj3cvslpknpip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bolovanje",
+            "certificate_hash": "b03e0aa13d345deb9e2eafd909b8dd6311d0504e"
+          }
+        },
+        {
           "client_id": "72007856879-9mea4u5upfaj7s5r673ge9lo63n801fl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

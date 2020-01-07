@@ -147,8 +147,8 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun readData() {
-        firstName = etFirstName.text.toString()
-        lastName = etLastName.text.toString()
+        firstName = etFirstName.text.toString().toLowerCase().capitalize()
+        lastName = etLastName.text.toString().toLowerCase().capitalize()
         excuse = cbExcuse.isChecked
 
         presenter.writeData(firstName, lastName, excuse)

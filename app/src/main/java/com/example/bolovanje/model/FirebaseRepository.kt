@@ -212,7 +212,7 @@ object FirebaseRepository {
 
                 var newListOfDaysThisMonth = mutableListOf<String>()
                 val newAllSelectedDays = mutableListOf<String>()
-                val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
+                val thisMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
 
                 //add all the selected days to this month list if they belong there
                 if(selectedDays.isEmpty()){
@@ -220,7 +220,7 @@ object FirebaseRepository {
                 }else{
                     val tempListOfDaysThisMonth = mutableListOf<Calendar>()
                     selectedDays.forEach {
-                        if(it.get(Calendar.MONTH).equals(thisMonth)){
+                        if((it.get(Calendar.MONTH)+1).equals(thisMonth)){
                             tempListOfDaysThisMonth.add(it)
                         }
                     }
@@ -230,7 +230,7 @@ object FirebaseRepository {
                 //add all the days without excuse to days this month if they belong there
                 if(it.daysWithoutExcuseList.isNotEmpty()){
                     it.daysWithoutExcuseList.forEach {
-                        if(it.substring(3, 5).equals((thisMonth + 1).toString())){
+                        if(it.substring(3, 5).toInt().equals(thisMonth)){
                             newListOfDaysThisMonth.add(it)
                         }
                     }
@@ -273,7 +273,7 @@ object FirebaseRepository {
 
                 val newDaysThisMonthList = mutableListOf<String>()
                 newSelectedDaysList.forEach {selectedDay->
-                    if(selectedDay.substring(3, 5).equals(thisMonth.toString())){
+                    if(selectedDay.substring(3, 5).toInt().equals(thisMonth)){
                         newDaysThisMonthList.add(selectedDay)
                     }
                 }
@@ -291,7 +291,7 @@ object FirebaseRepository {
     }
 
     fun resetDatesForNewMonth() {
-        val thisMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
+        val thisMonth: Int = Calendar.getInstance().get(Calendar.MONTH) + 1
         val listOfDatesThisMonth: MutableList<String> = mutableListOf()
         var count = 0
 
@@ -300,7 +300,7 @@ object FirebaseRepository {
             employers.forEach {
                 listOfDatesThisMonth.clear()
 
-                if(it.daysThisMonthList.isNotEmpty() && it.daysThisMonthList[0].substring(3, 5) != thisMonth.toString()){
+                if(it.daysThisMonthList.isNotEmpty() && it.daysThisMonthList[0].substring(3, 5).toInt() != thisMonth){
                     //reset daysThisMonthList to null and daysThisMonthNum to 0
                     mFirebaseDatabaseRef.child("Employer").child(keys[count])
                         .child("daysThisMonthNum").setValue(0)
@@ -309,7 +309,7 @@ object FirebaseRepository {
                 }
 
                 it.selectedDays.forEach {selectedDay->
-                    if(selectedDay.substring(3, 5).equals(thisMonth.toString())){
+                    if(selectedDay.substring(3, 5).toInt().equals(thisMonth)){
                         listOfDatesThisMonth.add(selectedDay)
                     }
                 }

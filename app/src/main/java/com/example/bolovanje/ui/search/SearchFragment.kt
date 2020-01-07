@@ -87,6 +87,8 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
     override fun onResume() {
         super.onResume()
         presenter.resetDatesForNewMonth()
+        adapter?.notifyDataSetChanged()
+
     }
 
     override fun onAttach(context: Context) {
@@ -179,16 +181,19 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
         builder.setTitle("Delete")
             .setMessage("Are you sure you want to delete this employer")
             .setCancelable(false)
-            .setPositiveButton("Yes"){dialog, id ->
-                presenter.deleteEmployer(position).subscribe {
+            .setPositiveButton("Yes"){vdialog, id ->
+                presenter.deleteEmployer(position).subscribe ({
                     if(it){
                         Toast.makeText(context, "Employer has been deleted", Toast.LENGTH_LONG).show()
                         adapter?.employerList?.removeAt(position)
-                        adapter!!.notifyItemRemoved(position)
+                        adapter?.notifyItemRemoved(position)
+                        adapter?.notifyDataSetChanged()
                     }else{
                         Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
                     }
-                }
+                }, {error->
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                })
             }.setNegativeButton("No"){dialog, id ->
 
             }
@@ -211,7 +216,7 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
                 lastNameValue = view.etLastName.text.toString()
 
                 if (selectedDatesForUpdateEmployer.isNotEmpty()){
-                    presenter.editEmployer(position, firstNameValue!!, lastNameValue!!, selectedDatesForUpdateEmployer).subscribe {
+                    presenter.editEmployer(position, firstNameValue!!, lastNameValue!!, selectedDatesForUpdateEmployer).subscribe ({
                         if(it.first){
                             Toast.makeText(context, "Employer has been successfully updated", Toast.LENGTH_LONG).show()
                             adapter?.employerList!![position] = it.second
@@ -219,9 +224,11 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
                         }else{
                             Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
                         }
-                    }
+                    }, {error->
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                    })
                 }else{
-                    presenter.editEmployer(position, firstNameValue!!, lastNameValue!!, selectedDays).subscribe {
+                    presenter.editEmployer(position, firstNameValue!!, lastNameValue!!, selectedDays).subscribe ({
                         if(it.first){
                             Toast.makeText(context, "Employer has been successfully updated", Toast.LENGTH_LONG).show()
                             adapter?.employerList!![position] = it.second
@@ -229,7 +236,9 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
                         }else{
                             Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
                         }
-                    }
+                    }, {error->
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                    })
                 }
 
             }.setNegativeButton("Cancel"){dialog, id ->

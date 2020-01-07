@@ -17,7 +17,6 @@ class HomePresenter: HomeContract.Presenter {
     private lateinit var view : HomeContract.View
 
     var selectedDates = mutableListOf<Calendar>(Calendar.getInstance())
-//    var timesInMillisList: MutableList<Long> = mutableListOf()
     var numOfDays: Int = 1
     var daysThisMonthList = mutableListOf<Calendar>(Calendar.getInstance())
     var daysWithExcuseList : MutableList<Calendar> = mutableListOf()
