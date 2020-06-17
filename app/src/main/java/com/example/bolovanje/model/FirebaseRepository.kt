@@ -348,5 +348,18 @@ object FirebaseRepository {
             }
         }
     }
+
+    fun addNewEmployer(employer: Employer): Observable<Boolean>{
+        return Observable.create<Boolean>{emitter ->
+            mFirebaseDatabaseRef.child("Employer").push().setValue(employer)
+                .addOnCompleteListener { task: Task<Void> ->
+                    if (task.isSuccessful) {
+                        emitter.onNext(true)
+                    } else {
+                        emitter.onNext(false)
+                    }
+                }
+        }
+    }
 }
 

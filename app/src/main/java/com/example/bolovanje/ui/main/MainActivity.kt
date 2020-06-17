@@ -37,12 +37,4 @@ class MainActivity : AppCompatActivity(){
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 
-
-//    fun enableBottomNaigation(enabled: Boolean){
-//        for (i in 0 until bottomNavigation.menu.size()){
-//            bottomNavigation.menu.getItem(i).isEnabled = enabled
-//        }
-//    }
-
-
 }
