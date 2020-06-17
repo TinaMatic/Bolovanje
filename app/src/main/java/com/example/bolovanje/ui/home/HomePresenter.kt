@@ -8,7 +8,10 @@ import com.example.bolovanje.utils.DateUtils.Companion.formatDates
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
 import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
@@ -149,16 +152,28 @@ class HomePresenter: HomeContract.Presenter {
     }
 
     private fun addNewEmployer(employer: Employer){
-        mFirebaseDatabaseRef.child("Employer").push().setValue(employer)
-            .addOnCompleteListener { task: Task<Void> ->
-                if (task.isSuccessful) {
+        compositeDisposable.add(FirebaseRepository.addNewEmployer(employer)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                if(it){
                     view.showSuccessfulMessage()
                     view.showProgressBar(false)
-                } else {
+                } else{
                     view.showErrorMessage()
                     view.showProgressBar(true)
                 }
-            }
+            })
+//        mFirebaseDatabaseRef.child("Employer").push().setValue(employer)
+//            .addOnCompleteListener { task: Task<Void> ->
+//                if (task.isSuccessful) {
+//                    view.showSuccessfulMessage()
+//                    view.showProgressBar(false)
+//                } else {
+//                    view.showErrorMessage()
+//                    view.showProgressBar(true)
+//                }
+//            }
     }
 
     private fun updateEmployerDates(firebaseListDates: MutableList<String>, datesList: MutableList<Calendar>): MutableList<String>{

@@ -115,7 +115,7 @@ class SearchFragment : Fragment(), SearchContract.View, OnSearchItemClickListene
     }
 
     override fun showErrorMessage(error: String) {
-        Toast.makeText(context, "Something went wrong " + error, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Something went wrong $error", Toast.LENGTH_LONG).show()
     }
 
     override fun showData(list: List<Employer>, databaseKeyList: List<String>) {
